@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Dormitory App</string>
+    <string name="nama_lengkap">Nama Lengkap</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="foto">Foto</string>
+    <string name="nim">NIM</string>
+    <string name="nomor_telepon">Nomor Telepon</string>
+    <string name="nomor_gedung_dan_kamar">Nomor Gedung &amp; Kamar</string>
+    <string name="submit">Submit</string>
+    <string name="cancel">Cancel</string>
+    <string name="input_invalid">Isian tidak boleh kosong</string>
+    <string name="gambar_asrama">Asrama Telkom University</string>
 </resources>
