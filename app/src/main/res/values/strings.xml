@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Dormitory App</string>
+
+<!--    Login String -->
+    <string name="username"> Username</string>
+    <string name="password"> Password</string>
+
 </resources>
