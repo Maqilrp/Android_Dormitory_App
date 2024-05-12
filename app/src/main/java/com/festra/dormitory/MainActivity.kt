@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.festra.dormitory.navigation.SetupNavGraph
 import com.festra.dormitory.ui.theme.DormitoryAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -41,6 +42,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     DormitoryAppTheme {
-        Login()
+
     }
 }

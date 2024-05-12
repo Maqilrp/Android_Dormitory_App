@@ -47,7 +47,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.festra.dormitory.R
+import com.festra.dormitory.navigation.Screen
 
 
 data class BottomNavigationItem(
@@ -58,24 +60,24 @@ data class BottomNavigationItem(
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun HomeScreen(){
+fun HomeScreen(navController: NavController){
     // data store
 //    val dataStore = SettingsDataStore(LocalContext.current)
 //    val showList by dataStore.layoutFlow.collectAsState(true)
 
     val items = listOf(
         BottomNavigationItem(
-            title = "History",
+            title = "history",
             selectedIcon = Icons.Filled.ShoppingCart,
             unselectedIcon = Icons.Outlined.ShoppingCart
         ),
         BottomNavigationItem(
-            title = "Home",
+            title = "home",
             selectedIcon = Icons.Filled.Home,
             unselectedIcon = Icons.Outlined.Home
         ),
         BottomNavigationItem(
-            title = "Profile",
+            title = "profile",
             selectedIcon = Icons.Filled.AccountCircle,
             unselectedIcon = Icons.Outlined.AccountCircle
         ),
@@ -113,7 +115,7 @@ fun HomeScreen(){
 //                            tint = MaterialTheme.colorScheme.primary
 //                        )
 //                    }
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = { navController.navigate(Screen.Profile.route)}) {
                         Icon(
                             imageVector = Icons.Filled.AccountCircle,
                             contentDescription = "Profile"
@@ -129,7 +131,7 @@ fun HomeScreen(){
                         selected = selectedIconIndex == index,
                         onClick = {
                             selectedIconIndex = index
-//                            navController.navigate(item.title)
+                            navController.navigate(item.title)
                         },
                         label = {
                             Text(text = item.title)
@@ -149,12 +151,12 @@ fun HomeScreen(){
         }
     ) {
         paddingValues ->
-        HomeContent(modifier = Modifier.padding(paddingValues))
+        HomeContent(modifier = Modifier.padding(paddingValues), navController)
     }
 }
 
 @Composable
-fun HomeContent(modifier: Modifier){
+fun HomeContent(modifier: Modifier, navController: NavController){
    Box(
        modifier = modifier
            .fillMaxSize()
@@ -201,10 +203,10 @@ fun HomeContent(modifier: Modifier){
                        horizontalArrangement = Arrangement.SpaceAround
 
                    ) {
-                       Button(onClick = { /*TODO*/ }) {
+                       Button(onClick = { navController.navigate(Screen.About.route) }) {
                            Text(text = "Profil Asrama")
                        }
-                       Button(onClick = { /*TODO*/ }) {
+                       Button(onClick = { navController.navigate(Screen.Aturan.route) }) {
                            Text(text = "Aturan Asrama")
                        }
                    }

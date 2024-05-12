@@ -35,11 +35,13 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.festra.dormitory.R
+import com.festra.dormitory.navigation.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Login() {
+fun Login(navController: NavController) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -77,7 +79,7 @@ fun Login() {
                         .align(Alignment.Center)
                 )
             }
-            ScreenContent(Modifier.padding(padding))
+            LoginContent(Modifier.padding(padding), navController)
         }
     }
 }
@@ -85,7 +87,7 @@ fun Login() {
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun ScreenContent(modifier: Modifier) {
+fun LoginContent(modifier: Modifier, navController: NavController) {
     val context = LocalContext.current
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -193,10 +195,19 @@ fun ScreenContent(modifier: Modifier) {
                     return@Button
                 }
                 // Handle login logic here
+                navController.navigate(Screen.Home.route)
             },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("SIGN IN")
+        }
+        
+//        Text(text = "h",Modifier.clickable { navController.navigate(Screen.Register.route) })
+        Button(
+            onClick = {navController.navigate(Screen.Register.route)},
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(text = "Register")
         }
     }
 }
