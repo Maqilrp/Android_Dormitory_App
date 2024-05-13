@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "457189418474",
+    "project_id": "festradormitory",
+    "storage_bucket": "festradormitory.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:457189418474:android:ded95980cdb1f8adc33e93",
+        "android_client_info": {
+          "package_name": "com.festra.dormitory"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD88OXc57RhBuOdVoixbmhk7MCIXDrUDIk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
