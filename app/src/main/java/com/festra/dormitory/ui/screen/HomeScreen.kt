@@ -5,8 +5,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -20,6 +22,7 @@ import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ElevatedCard
@@ -223,17 +226,45 @@ fun HomeContent(modifier: Modifier, navController: NavController){
                horizontalArrangement = Arrangement.SpaceAround
            ) {
                ElevatedCard(
-                   elevation = CardDefaults.cardElevation(
-                       defaultElevation = 6.dp
-                   ),
-                   onClick = {  navController.navigate(Screen.Perizinan.route) },
-                   colors = CardDefaults.cardColors(
-                       containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                   ),
+                   elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+                   onClick = { navController.navigate(Screen.Perizinan.route) },
+                   colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
                    modifier = Modifier
                        .size(width = 150.dp, height = 150.dp)
                ) {
-                   Text(text = "Perizinan")
+                   Column(
+                       modifier = Modifier
+                           .fillMaxSize()
+                           .padding(16.dp),
+                       verticalArrangement = Arrangement.Center,
+                       horizontalAlignment = Alignment.CenterHorizontally
+                   ) {
+                       // Add your image here
+                       Image(
+                           painter = painterResource(id = R.drawable.perizinan),
+                           contentDescription = null,
+                           modifier = Modifier.size(80.dp)
+                       )
+                       Spacer(modifier = Modifier.height(8.dp))
+                       Text(
+                           text = "PERIZINAN",
+                           style = MaterialTheme.typography.bodySmall,
+                           fontWeight = FontWeight.Bold
+                       )
+                       Spacer(modifier = Modifier.height(8.dp))
+                       Text(
+                           text = "Users can use this feature to manage permits in the dormitory area.",
+                           style = MaterialTheme.typography.bodySmall
+                       )
+                       Spacer(modifier = Modifier.height(16.dp))
+                       Button(
+                           onClick = { /* Handle GO PERIZINAN */ },
+                           shape = RoundedCornerShape(50),
+                           colors = ButtonDefaults.buttonColors()
+                       ) {
+                           Text("GO PERIZINAN")
+                       }
+                   }
                }
 
                ElevatedCard(
