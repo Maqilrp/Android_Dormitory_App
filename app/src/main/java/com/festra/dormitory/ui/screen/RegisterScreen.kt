@@ -2,14 +2,12 @@ package com.festra.dormitory.ui.screen
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,25 +16,19 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -47,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.festra.dormitory.R
+import com.festra.dormitory.navigation.Screen
 import com.festra.dormitory.ui.theme.DormitoryAppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -80,12 +73,12 @@ fun RegisterScreen(navController: NavHostController) {
             }
         }
     ) { paddingValues ->
-        ScreenContent(Modifier.padding(paddingValues))
+        ScreenContent(Modifier.padding(paddingValues), navController)
     }
 }
 
 @Composable
-fun ScreenContent(modifier: Modifier) {
+fun ScreenContent(modifier: Modifier, navController: NavHostController) {
     var namaLengkap by rememberSaveable { mutableStateOf("") }
     var namaLengkapError by rememberSaveable { mutableStateOf(false) }
     var email by rememberSaveable { mutableStateOf("") }
@@ -100,6 +93,8 @@ fun ScreenContent(modifier: Modifier) {
     var noTeleponError by rememberSaveable { mutableStateOf(false) }
     var noGedungKamar by rememberSaveable { mutableStateOf("") }
     var noGedungKamarError by rememberSaveable { mutableStateOf(false) }
+
+//    val viewModel: MainViewModel = hiltViewModel()
 
     Column(
         modifier = modifier
@@ -213,6 +208,8 @@ fun ScreenContent(modifier: Modifier) {
         )
         Button(
             onClick = {
+
+//                viewModel.onButtonClick()
                 namaLengkapError = (namaLengkap == "")
                 emailError = (email == "")
                 passwordError = (password == "")
@@ -228,7 +225,7 @@ fun ScreenContent(modifier: Modifier) {
             Text(text = stringResource(R.string.submit))
         }
         Button(
-            onClick = { /* Perform cancel action */ },
+            onClick = { navController.navigate(Screen.Login.route) },
             modifier = Modifier.padding(top = 8.dp),
             contentPadding = PaddingValues(horizontal = 32.dp, vertical = 16.dp)
         ) {

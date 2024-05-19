@@ -2,6 +2,8 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
+    id("com.google.dagger.hilt.android")
+    id("kotlin-kapt")
 }
 
 android {
@@ -81,4 +83,19 @@ dependencies {
     // foundation
     implementation("androidx.compose.foundation:foundation:1.6.7")
 
+//    Hilt dependencies
+    implementation("com.google.dagger:hilt-android:2.49")
+    kapt("com.google.dagger:hilt-android-compiler:2.44")
+//    Hilt Compose Integration
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+//    ViewModel Compose Integration
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+//    Kotlin Annotation Processing
+    kapt("androidx.hilt:hilt-compiler:1.2.0")
+//    Optional for Fragment Integration
+    implementation("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")
+}
+
+kapt {
+    correctErrorTypes = true
 }
