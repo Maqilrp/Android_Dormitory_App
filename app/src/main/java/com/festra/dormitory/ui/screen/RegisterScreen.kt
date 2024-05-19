@@ -208,7 +208,6 @@ fun ScreenContent(modifier: Modifier, navController: NavHostController) {
         )
         Button(
             onClick = {
-
 //                viewModel.onButtonClick()
                 namaLengkapError = (namaLengkap == "")
                 emailError = (email == "")
@@ -218,6 +217,9 @@ fun ScreenContent(modifier: Modifier, navController: NavHostController) {
                 noTeleponError = (noTelepon == "")
                 noGedungKamarError = (noGedungKamar == "")
                 if (namaLengkapError || emailError || passwordError || fotoError || nimError || noTeleponError || noGedungKamarError) return@Button
+//                navController.navigate(Screen.Login.route)
+//                Bawah buat ngetes aja biar bisa ke home, ntar tetep make yang atas
+                navController.navigate(Screen.Home.route)
             },
             modifier = Modifier.padding(top = 8.dp),
             contentPadding = PaddingValues(horizontal = 32.dp, vertical = 16.dp)
