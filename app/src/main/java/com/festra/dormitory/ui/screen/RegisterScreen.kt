@@ -45,7 +45,7 @@ import com.festra.dormitory.ui.theme.DormitoryAppTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterScreen(navController: NavHostController) {
-    Scaffold (
+    Scaffold(
         topBar = {
             Column(
                 modifier = Modifier.padding()
@@ -256,7 +256,7 @@ fun ErrorHint(isError: Boolean) {
 @Preview(showBackground = true)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
-fun ScreenPreview() {
+fun RegisterPreview() {
     DormitoryAppTheme {
         RegisterScreen(rememberNavController())
     }

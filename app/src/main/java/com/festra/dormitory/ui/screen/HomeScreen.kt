@@ -1,5 +1,6 @@
 package com.festra.dormitory.ui.screen
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -45,11 +46,14 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.festra.dormitory.R
 import com.festra.dormitory.navigation.Screen
+import com.festra.dormitory.ui.theme.DormitoryAppTheme
 
 
 data class BottomNavigationItem(
@@ -60,7 +64,7 @@ data class BottomNavigationItem(
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun HomeScreen(navController: NavController){
+fun HomeScreen(navController: NavController) {
     // data store
 //    val dataStore = SettingsDataStore(LocalContext.current)
 //    val showList by dataStore.layoutFlow.collectAsState(true)
@@ -115,7 +119,7 @@ fun HomeScreen(navController: NavController){
 //                            tint = MaterialTheme.colorScheme.primary
 //                        )
 //                    }
-                    IconButton(onClick = { navController.navigate(Screen.Profile.route)}) {
+                    IconButton(onClick = { navController.navigate(Screen.Profile.route) }) {
                         Icon(
                             imageVector = Icons.Filled.AccountCircle,
                             contentDescription = "Profile"
@@ -149,176 +153,184 @@ fun HomeScreen(navController: NavController){
                 }
             }
         }
-    ) {
-        paddingValues ->
+    ) { paddingValues ->
         HomeContent(modifier = Modifier.padding(paddingValues), navController)
     }
 }
 
 @Composable
-fun HomeContent(modifier: Modifier, navController: NavController){
-   Box(
-       modifier = modifier
-           .fillMaxSize()
-           .verticalScroll(rememberScrollState())
-   ){
-       Column(
+fun HomeContent(modifier: Modifier, navController: NavController) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+    ) {
+        Column(
 //           modifier = modifier
-           horizontalAlignment = Alignment.CenterHorizontally
-       ) {
-           // Text Header
-           Text(
-               text = "Mempermudah Hidup Di Asrama",
-               textAlign = TextAlign.Center,
-               fontWeight = FontWeight.Bold,
-               fontSize = 20.sp,
-               modifier = modifier.padding(1.dp)
-           )
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            // Text Header
+            Text(
+                text = "Mempermudah Hidup Di Asrama",
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp,
+                modifier = modifier.padding(1.dp)
+            )
 
-           // gambar asrama
-           Box {
-               Image(
-                   modifier = Modifier.clip(shape = RoundedCornerShape(16.dp)),
-                   painter = painterResource(id = R.drawable.gambar_asrama),
-                   contentDescription = "Asrama",
-               )
+            // gambar asrama
+            Box {
+                Image(
+                    modifier = Modifier.clip(shape = RoundedCornerShape(16.dp)),
+                    painter = painterResource(id = R.drawable.gambar_asrama),
+                    contentDescription = "Asrama",
+                )
 
-               Column {
-                   Text(
-                       text = "Festra",
-                       fontWeight = FontWeight.Bold,
-                       color = Color.Black,
-                   )
+                Column {
+                    Text(
+                        text = "Festra",
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black,
+                    )
 
-                   Text(
-                       text ="Aplikasi ini hadir untuk memberikan solusi terhadap segala masalah dan persoalan keperluan asrama yang dianytaranya ialah membantu para penghuni asrama untuk berkomunikasi dengan SR (Senior Residence), helpdesk, dan satpam. Serta menawarkan pembelian token listrik, laundry pakaian, pembelian galon, pengambilan paket, dan mengurus surat izin.",
-                       maxLines = 3,
-                       textAlign = TextAlign.Justify,
-                       color = Color.Black,
-                       fontSize = 10.sp,
-                   )
+                    Text(
+                        text = "Aplikasi ini hadir untuk memberikan solusi terhadap segala masalah dan persoalan keperluan asrama yang dianytaranya ialah membantu para penghuni asrama untuk berkomunikasi dengan SR (Senior Residence), helpdesk, dan satpam. Serta menawarkan pembelian token listrik, laundry pakaian, pembelian galon, pengambilan paket, dan mengurus surat izin.",
+                        maxLines = 3,
+                        textAlign = TextAlign.Justify,
+                        color = Color.Black,
+                        fontSize = 10.sp,
+                    )
 
-                   Row(
-                       modifier = modifier.fillMaxWidth(),
-                       horizontalArrangement = Arrangement.SpaceAround
+                    Row(
+                        modifier = modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceAround
 
-                   ) {
-                       Button(onClick = { navController.navigate(Screen.About.route) }) {
-                           Text(text = "Profil Asrama")
-                       }
-                       Button(onClick = { navController.navigate(Screen.Aturan.route) }) {
-                           Text(text = "Aturan Asrama")
-                       }
-                   }
-               }
-           }
+                    ) {
+                        Button(onClick = { navController.navigate(Screen.About.route) }) {
+                            Text(text = "Profil Asrama")
+                        }
+                        Button(onClick = { navController.navigate(Screen.Aturan.route) }) {
+                            Text(text = "Aturan Asrama")
+                        }
+                    }
+                }
+            }
 
-           Text(
-               text = "Apa Yang Anda Butuhkan",
-               fontWeight = FontWeight.Bold
-           )
+            Text(
+                text = "Apa Yang Anda Butuhkan",
+                fontWeight = FontWeight.Bold
+            )
 
-           Row(
-               modifier = modifier.fillMaxSize(),
-               horizontalArrangement = Arrangement.SpaceAround
-           ) {
-               ElevatedCard(
-                   elevation = CardDefaults.cardElevation(
-                       defaultElevation = 6.dp
-                   ),
-                   onClick = { /*TODO*/ },
-                   colors = CardDefaults.cardColors(
-                       containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                   ),
-                   modifier = Modifier
-                       .size(width = 150.dp, height = 150.dp)
-               ) {
-                   Text(text = "Perizinan")
-               }
+            Row(
+                modifier = modifier.fillMaxSize(),
+                horizontalArrangement = Arrangement.SpaceAround
+            ) {
+                ElevatedCard(
+                    elevation = CardDefaults.cardElevation(
+                        defaultElevation = 6.dp
+                    ),
+                    onClick = { /*TODO*/ },
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    ),
+                    modifier = Modifier
+                        .size(width = 150.dp, height = 150.dp)
+                ) {
+                    Text(text = "Perizinan")
+                }
 
-               ElevatedCard(
-                   elevation = CardDefaults.cardElevation(
-                       defaultElevation = 6.dp
-                   ),
-                   onClick = { /*TODO*/ },
-                   colors = CardDefaults.cardColors(
-                       containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                   ),
-                   modifier = Modifier
-                       .size(width = 150.dp, height = 150.dp)
-               ) {
-                   Text(text = "Laundry")
-               }
+                ElevatedCard(
+                    elevation = CardDefaults.cardElevation(
+                        defaultElevation = 6.dp
+                    ),
+                    onClick = { /*TODO*/ },
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    ),
+                    modifier = Modifier
+                        .size(width = 150.dp, height = 150.dp)
+                ) {
+                    Text(text = "Laundry")
+                }
 
-           }
+            }
 
-           Row(
-               modifier = modifier.fillMaxSize(),
-               horizontalArrangement = Arrangement.SpaceAround
-           ) {
-               ElevatedCard(
-                   elevation = CardDefaults.cardElevation(
-                       defaultElevation = 6.dp
-                   ),
-                   onClick = { /*TODO*/ },
-                   colors = CardDefaults.cardColors(
-                       containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                   ),
-                   modifier = Modifier
-                       .size(width = 150.dp, height = 150.dp)
-               ) {
-                   Text(text = "Air Minum")
-               }
+            Row(
+                modifier = modifier.fillMaxSize(),
+                horizontalArrangement = Arrangement.SpaceAround
+            ) {
+                ElevatedCard(
+                    elevation = CardDefaults.cardElevation(
+                        defaultElevation = 6.dp
+                    ),
+                    onClick = { /*TODO*/ },
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    ),
+                    modifier = Modifier
+                        .size(width = 150.dp, height = 150.dp)
+                ) {
+                    Text(text = "Air Minum")
+                }
 
-               ElevatedCard(
-                   elevation = CardDefaults.cardElevation(
-                       defaultElevation = 6.dp
-                   ),
-                   onClick = { /*TODO*/ },
-                   colors = CardDefaults.cardColors(
-                       containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                   ),
-                   modifier = Modifier
-                       .size(width = 150.dp, height = 150.dp)
-               ) {
-                   Text(text = "Listrik")
-               }
+                ElevatedCard(
+                    elevation = CardDefaults.cardElevation(
+                        defaultElevation = 6.dp
+                    ),
+                    onClick = { /*TODO*/ },
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    ),
+                    modifier = Modifier
+                        .size(width = 150.dp, height = 150.dp)
+                ) {
+                    Text(text = "Listrik")
+                }
 
-           }
+            }
 
-           Row(
-               modifier = modifier.fillMaxSize(),
-               horizontalArrangement = Arrangement.SpaceAround
-           ) {
-               ElevatedCard(
-                   elevation = CardDefaults.cardElevation(
-                       defaultElevation = 6.dp
-                   ),
-                   onClick = { /*TODO*/ },
-                   colors = CardDefaults.cardColors(
-                       containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                   ),
-                   modifier = Modifier
-                       .size(width = 150.dp, height = 150.dp)
-               ) {
-                   Text(text = "Paket")
-               }
+            Row(
+                modifier = modifier.fillMaxSize(),
+                horizontalArrangement = Arrangement.SpaceAround
+            ) {
+                ElevatedCard(
+                    elevation = CardDefaults.cardElevation(
+                        defaultElevation = 6.dp
+                    ),
+                    onClick = { /*TODO*/ },
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    ),
+                    modifier = Modifier
+                        .size(width = 150.dp, height = 150.dp)
+                ) {
+                    Text(text = "Paket")
+                }
 
-               ElevatedCard(
-                   elevation = CardDefaults.cardElevation(
-                       defaultElevation = 6.dp
-                   ),
-                   onClick = { /*TODO*/ },
-                   colors = CardDefaults.cardColors(
-                       containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                   ),
-                   modifier = Modifier
-                       .size(width = 150.dp, height = 150.dp)
-               ) {
-                   Text(text = "History")
-               }
+                ElevatedCard(
+                    elevation = CardDefaults.cardElevation(
+                        defaultElevation = 6.dp
+                    ),
+                    onClick = { /*TODO*/ },
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    ),
+                    modifier = Modifier
+                        .size(width = 150.dp, height = 150.dp)
+                ) {
+                    Text(text = "History")
+                }
 
-           }
-       }
-   }
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@Composable
+fun HomePreview() {
+    DormitoryAppTheme {
+        HomeScreen(rememberNavController())
+    }
 }

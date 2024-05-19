@@ -1,5 +1,6 @@
 package com.festra.dormitory.ui.screen
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -23,12 +24,15 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.festra.dormitory.ui.theme.DormitoryAppTheme
 
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun ProfileScreen(navController: NavController){
+fun ProfileScreen(navController: NavController) {
     // data store
 //    val dataStore = SettingsDataStore(LocalContext.current)
 //    val showList by dataStore.layoutFlow.collectAsState(true)
@@ -111,13 +115,21 @@ fun ProfileScreen(navController: NavController){
                 }
             }
         }
-    ) {
-            paddingValues ->
+    ) { paddingValues ->
         ProfileContent(modifier = Modifier.padding(paddingValues), navController)
     }
 }
 
 @Composable
-fun ProfileContent(modifier: Modifier, navController: NavController){
+fun ProfileContent(modifier: Modifier, navController: NavController) {
 
+}
+
+@Preview(showBackground = true)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@Composable
+fun ProfilePreview() {
+    DormitoryAppTheme {
+        ProfileScreen(rememberNavController())
+    }
 }
