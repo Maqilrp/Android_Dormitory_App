@@ -226,7 +226,7 @@ fun HomeContent(modifier: Modifier, navController: NavController){
                    elevation = CardDefaults.cardElevation(
                        defaultElevation = 6.dp
                    ),
-                   onClick = { /*TODO*/ },
+                   onClick = {  navController.navigate(Screen.Perizinan.route) },
                    colors = CardDefaults.cardColors(
                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
                    ),

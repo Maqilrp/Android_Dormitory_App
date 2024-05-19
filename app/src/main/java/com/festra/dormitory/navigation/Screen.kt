@@ -10,4 +10,5 @@ sealed class Screen(
     data object Profile: Screen("profile")
     data object About: Screen("about")
     data object Aturan: Screen("aturan")
+    data object Perizinan: Screen("perizinan")
 }

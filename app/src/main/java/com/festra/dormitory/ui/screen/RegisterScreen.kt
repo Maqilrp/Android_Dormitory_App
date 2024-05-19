@@ -44,10 +44,15 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.festra.dormitory.R
+import com.festra.dormitory.navigation.Screen
 import com.festra.dormitory.ui.theme.DormitoryAppTheme
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -10,6 +10,7 @@ import com.festra.dormitory.ui.screen.AturanScreen
 import com.festra.dormitory.ui.screen.HistoryScreen
 import com.festra.dormitory.ui.screen.HomeScreen
 import com.festra.dormitory.ui.screen.Login
+import com.festra.dormitory.ui.screen.PerizinanScreen
 import com.festra.dormitory.ui.screen.ProfileScreen
 import com.festra.dormitory.ui.screen.RegisterScreen
 
@@ -55,6 +56,11 @@ fun SetupNavGraph(
             route = Screen.Aturan.route
         ) {
             AturanScreen(navController)
+        }
+        composable(
+            route = Screen.Perizinan.route
+        ) {
+            PerizinanScreen(navController)
         }
     }
 }
