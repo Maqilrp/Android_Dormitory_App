@@ -42,6 +42,7 @@ import androidx.navigation.compose.rememberNavController
 import com.festra.dormitory.R
 import com.festra.dormitory.navigation.Screen
 import com.festra.dormitory.ui.theme.DormitoryAppTheme
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 
 @OptIn(ExperimentalMaterial3Api::class)
