@@ -47,14 +47,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.festra.dormitory.R
+import com.festra.dormitory.ui.theme.DormitoryAppTheme
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun HistoryScreen(navController: NavController){
+fun HistoryScreen(navController: NavController) {
     // data store
 //    val dataStore = SettingsDataStore(LocalContext.current)
 //    val showList by dataStore.layoutFlow.collectAsState(true)
@@ -137,8 +140,7 @@ fun HistoryScreen(navController: NavController){
                 }
             }
         }
-    ) {
-            paddingValues ->
+    ) { paddingValues ->
         HistoryContent(modifier = Modifier.padding(paddingValues), navController)
     }
 }
@@ -178,7 +180,7 @@ fun HistoryContent(modifier: Modifier = Modifier, navController: NavController) 
                 destination = "listrik"
             ),
             HistoryItem(
-                imageRes = R.drawable.paket ,
+                imageRes = R.drawable.paket,
                 title = "Paket",
                 description = "Informasi pengiriman paket masuk dan keluar asrama, serta memastikan keamanan dan keakuratan.",
                 destination = "paket"
@@ -246,5 +248,13 @@ fun HistoryCard(item: HistoryItem, navController: NavController) {
                 }
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun HistoryPreview() {
+    DormitoryAppTheme {
+        HistoryScreen(rememberNavController())
     }
 }

@@ -47,7 +47,7 @@ import com.festra.dormitory.ui.theme.DormitoryAppTheme
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun PerizinanScreen(navController: NavController) {
+fun PaketScreen(navController: NavController) {
     // data store
 //    val dataStore = SettingsDataStore(LocalContext.current)
 //    val showList by dataStore.layoutFlow.collectAsState(true)
@@ -77,7 +77,7 @@ fun PerizinanScreen(navController: NavController) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text(text = "Perizinan") },
+                title = { Text(text = "Paket") },
                 colors = TopAppBarDefaults.mediumTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.surfaceBright,
                     titleContentColor = MaterialTheme.colorScheme.primary
@@ -131,17 +131,17 @@ fun PerizinanScreen(navController: NavController) {
             }
         }
     ) { paddingValues ->
-        PerizinanContent(modifier = Modifier.padding(paddingValues), navController)
+        PaketItem(modifier = Modifier.padding(paddingValues), navController)
     }
 }
 
 @Composable
-fun PerizinanContent(modifier: Modifier = Modifier, navController: NavController) {
+fun PaketItem(modifier: Modifier = Modifier, navController: NavController) {
+    var namaLengkap by remember { mutableStateOf(TextFieldValue("")) }
     var nim by remember { mutableStateOf(TextFieldValue("")) }
-    var jenisPerizinan by remember { mutableStateOf(TextFieldValue("")) }
     var nomorGedungKamar by remember { mutableStateOf(TextFieldValue("")) }
-    var tanggalWaktu by remember { mutableStateOf(TextFieldValue("")) }
-    var alasan by remember { mutableStateOf(TextFieldValue("")) }
+    var buktiGambar by remember { mutableStateOf(TextFieldValue("")) }
+    var nomorTelepon by remember { mutableStateOf(TextFieldValue("")) }
 
     Column(
         modifier = modifier
@@ -151,6 +151,12 @@ fun PerizinanContent(modifier: Modifier = Modifier, navController: NavController
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // Input fields
+        OutlinedTextField(
+            value = namaLengkap,
+            onValueChange = { namaLengkap = it },
+            label = { Text("Nama Lengkap") }
+        )
+        Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
             value = nim,
             onValueChange = { nim = it },
@@ -164,21 +170,15 @@ fun PerizinanContent(modifier: Modifier = Modifier, navController: NavController
         )
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
-            value = jenisPerizinan,
-            onValueChange = { jenisPerizinan = it },
-            label = { Text("Jenis Perizinan") }
+            value = buktiGambar,
+            onValueChange = { buktiGambar = it },
+            label = { Text("Bukti Gambar") }
         )
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
-            value = tanggalWaktu,
-            onValueChange = { tanggalWaktu = it },
-            label = { Text("Tanggal dan Waktu") }
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(
-            value = alasan,
-            onValueChange = { alasan = it },
-            label = { Text("Alasan") }
+            value = nomorTelepon,
+            onValueChange = { nomorTelepon = it },
+            label = { Text("Nomor Telepon") }
         )
         Spacer(modifier = Modifier.height(16.dp))
         // Submit and Cancel buttons
@@ -202,8 +202,8 @@ fun PerizinanContent(modifier: Modifier = Modifier, navController: NavController
 
 @Preview(showBackground = true)
 @Composable
-fun PerizinanPreview() {
+fun PaketPreview() {
     DormitoryAppTheme {
-        PerizinanScreen(rememberNavController())
+        PaketScreen(rememberNavController())
     }
 }

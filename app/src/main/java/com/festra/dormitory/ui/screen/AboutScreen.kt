@@ -32,12 +32,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.festra.dormitory.R
+import com.festra.dormitory.ui.theme.DormitoryAppTheme
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun AboutScreen(navController: NavController){
+fun AboutScreen(navController: NavController) {
     // data store
 //    val dataStore = SettingsDataStore(LocalContext.current)
 //    val showList by dataStore.layoutFlow.collectAsState(true)
@@ -129,8 +132,7 @@ fun AboutScreen(navController: NavController){
                 }
             }
         }
-    ) {
-            paddingValues ->
+    ) { paddingValues ->
         AboutContent(modifier = Modifier.padding(paddingValues))
     }
 }
@@ -138,7 +140,7 @@ fun AboutScreen(navController: NavController){
 @Composable
 fun AboutContent(
     modifier: Modifier
-){
+) {
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -156,7 +158,7 @@ fun AboutContent(
         )
 
         Text(
-            text =".\n" +
+            text = ".\n" +
                     "\n" +
                     "Festra dapat menyediakan layanan berupa platform atau website yang memudahkan para penghuni asrama untuk mengakses informasi seputar asrama, termasuk mengelola fasilitas asrama dan berkomunikasi dengan pengelola asrama.\n" +
                     "\n" +
@@ -166,8 +168,16 @@ fun AboutContent(
                     "\n" +
                     "Selain itu, platform yang disediakan oleh Festra juga dapat dilengkapi dengan fitur komunikasi antara para penghuni asrama dan pengelola asrama. Fitur ini memungkinkan para penghuni asrama untuk mengajukan pertanyaan, keluhan, atau permintaan bantuan kepada pengelola asrama secara online. Hal ini dapat memudahkan penghuni asrama dalam berkomunikasi dengan pengelola asrama, terutama jika mereka tidak bisa bertemu langsung atau ketika pengelola asrama sibuk.\n" +
                     "\n" +
-                    "Dengan menyediakan platform atau website yang memudahkan para penghuni asrama dalam mengakses informasi dan mengelola fasilitas asrama, Festra dapat membantu penghuni asrama untuk lebih efektif dan efisien dalam mengelola kebutuhan mereka di dalam asrama. Sehingga, Festra memiliki potensi untuk menjadi salah satu penyedia layanan asrama yang terpercaya dan terdepan."
-            , textAlign = TextAlign.Justify
+                    "Dengan menyediakan platform atau website yang memudahkan para penghuni asrama dalam mengakses informasi dan mengelola fasilitas asrama, Festra dapat membantu penghuni asrama untuk lebih efektif dan efisien dalam mengelola kebutuhan mereka di dalam asrama. Sehingga, Festra memiliki potensi untuk menjadi salah satu penyedia layanan asrama yang terpercaya dan terdepan.",
+            textAlign = TextAlign.Justify
         )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun AboutPreview() {
+    DormitoryAppTheme {
+        AboutScreen(rememberNavController())
     }
 }

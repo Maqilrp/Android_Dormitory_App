@@ -47,13 +47,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.festra.dormitory.navigation.Screen
+import com.festra.dormitory.ui.theme.DormitoryAppTheme
 
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun ProfileScreen(navController: NavController){
+fun ProfileScreen(navController: NavController) {
     // data store
 //    val dataStore = SettingsDataStore(LocalContext.current)
 //    val showList by dataStore.layoutFlow.collectAsState(true)
@@ -136,11 +140,11 @@ fun ProfileScreen(navController: NavController){
                 }
             }
         }
-    ) {
-            paddingValues ->
+    ) { paddingValues ->
         ProfileContent(modifier = Modifier.padding(paddingValues), navController)
     }
 }
+
 @Composable
 fun UserProfileScreen(navController: NavController) {
     ProfileScreen(navController = navController)
@@ -226,7 +230,7 @@ fun ProfileContent(modifier: Modifier, navController: NavController) {
             }
             Spacer(modifier = Modifier.width(8.dp))
             Button(
-                onClick = { /* Handle cancel */ },
+                onClick = { navController.navigate(Screen.Home.route) },
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
             ) {
                 Text("Cancel")
@@ -234,6 +238,15 @@ fun ProfileContent(modifier: Modifier, navController: NavController) {
         }
     }
 }
+
+@Preview(showBackground = true)
+@Composable
+fun ProfilePreview() {
+    DormitoryAppTheme {
+        ProfileScreen(rememberNavController())
+    }
+}
+
 //data class BottomNavigationItem(
 //    val title: String,
 //    val selectedIcon: ImageVector,

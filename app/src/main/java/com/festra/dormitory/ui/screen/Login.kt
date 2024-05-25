@@ -35,10 +35,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.festra.dormitory.R
 import com.festra.dormitory.navigation.Screen
+import com.festra.dormitory.ui.theme.DormitoryAppTheme
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 
@@ -137,7 +140,7 @@ fun LoginContent(modifier: Modifier, navController: NavController) {
                     emailErrorText = "" // Clear error message when input changes
                 },
                 modifier = Modifier.fillMaxWidth(),
-                label = { Text("Email")},
+                label = { Text("Email") },
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
             )
             // Display error message if email field is empty
@@ -203,7 +206,8 @@ fun LoginContent(modifier: Modifier, navController: NavController) {
                             navController.navigate(Screen.Home.route)
                         } else {
                             // If sign in fails, display a message to the user.
-                            Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT)
+                                .show()
                         }
                     }
             },
@@ -219,5 +223,13 @@ fun LoginContent(modifier: Modifier, navController: NavController) {
         ) {
             Text(text = "Register")
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun LoginPreview() {
+    DormitoryAppTheme {
+        Login(rememberNavController())
     }
 }
