@@ -268,7 +268,7 @@ fun HomeContent(modifier: Modifier, navController: NavController) {
                 ElevatedCard(
                     elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
                     onClick = { navController.navigate(Screen.Laundry.route) },
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant,),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
                     modifier = Modifier
                         .size(width = 150.dp, height = 150.dp)
                 ) {
@@ -314,7 +314,7 @@ fun HomeContent(modifier: Modifier, navController: NavController) {
                 ElevatedCard(
                     elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
                     onClick = { navController.navigate(Screen.Airminum.route) },
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant,),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
                     modifier = Modifier
                         .size(width = 150.dp, height = 150.dp)
                 ) {
