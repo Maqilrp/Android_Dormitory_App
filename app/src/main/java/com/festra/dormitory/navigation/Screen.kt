@@ -11,4 +11,13 @@ sealed class Screen(
     data object About: Screen("about")
     data object Aturan: Screen("aturan")
     data object Perizinan: Screen("perizinan")
+    data object Admin_mahasiswa: Screen("awalogin")
+    data object HomeAdmin: Screen("homeadmin")
+    data object Admin_AirMinum: Screen("airminumadmin")
+    data object Admin_Users: Screen("Usersadmin")
+    data object Admin_Gedung: Screen("Gedungadmin")
+    data object Admin_Perizinan: Screen("Perizinanadmin")
+    data object Admin_Laundry: Screen("Laundryadmin")
+    data object Admin_Listrik: Screen("Listrikadmin")
+    data object Admin_Paket: Screen("Paketadmin")
 }
