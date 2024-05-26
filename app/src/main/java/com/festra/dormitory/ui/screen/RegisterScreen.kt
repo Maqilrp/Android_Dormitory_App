@@ -1,15 +1,14 @@
 package com.festra.dormitory.ui.screen
 
 import android.content.res.Configuration
+import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,25 +17,20 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -47,7 +41,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.festra.dormitory.R
+import com.festra.dormitory.navigation.Screen
 import com.festra.dormitory.ui.theme.DormitoryAppTheme
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
+import com.google.firebase.firestore.FirebaseFirestore
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -80,12 +78,12 @@ fun RegisterScreen(navController: NavHostController) {
             }
         }
     ) { paddingValues ->
-        ScreenContent(Modifier.padding(paddingValues))
+        ScreenContent(Modifier.padding(paddingValues), navController)
     }
 }
 
 @Composable
-fun ScreenContent(modifier: Modifier) {
+fun ScreenContent(modifier: Modifier, navController: NavHostController) {
     var namaLengkap by rememberSaveable { mutableStateOf("") }
     var namaLengkapError by rememberSaveable { mutableStateOf(false) }
     var email by rememberSaveable { mutableStateOf("") }
@@ -100,6 +98,9 @@ fun ScreenContent(modifier: Modifier) {
     var noTeleponError by rememberSaveable { mutableStateOf(false) }
     var noGedungKamar by rememberSaveable { mutableStateOf("") }
     var noGedungKamarError by rememberSaveable { mutableStateOf(false) }
+    val context = LocalContext.current
+    val firestore = FirebaseFirestore.getInstance()
+
 
     Column(
         modifier = modifier
@@ -213,14 +214,41 @@ fun ScreenContent(modifier: Modifier) {
         )
         Button(
             onClick = {
-                namaLengkapError = (namaLengkap == "")
-                emailError = (email == "")
-                passwordError = (password == "")
-                fotoError = (foto == "")
-                nimError = (nim == "")
-                noTeleponError = (noTelepon == "")
-                noGedungKamarError = (noGedungKamar == "")
-                if (namaLengkapError || emailError || passwordError || fotoError || nimError || noTeleponError || noGedungKamarError) return@Button
+
+                Firebase.auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener {
+                    task ->
+                    if (task.isSuccessful){
+                        val user = Firebase.auth.currentUser
+                        val userId = user?.uid
+                        val userData = hashMapOf(
+                            "name" to namaLengkap,
+                            "email" to  email,
+                            "password" to  password,
+                            "foto" to  foto,
+                            "nim" to  nim,
+                            "noTelephone" to  noTelepon,
+                            "noGedungKamar" to  noGedungKamar,
+                        )
+                        userId?.let {
+                            firestore.collection("users").document(it).set(userData)
+                                .addOnSuccessListener {
+                                    navController.navigate(Screen.Login.route)
+                                }
+                                .addOnFailureListener {
+                                    Toast.makeText(context,"Fail",Toast.LENGTH_SHORT).show()
+                                }
+                        }
+                    }
+                }
+
+//                namaLengkapError = (namaLengkap == "")
+//                emailError = (email == "")
+//                passwordError = (password == "")
+//                fotoError = (foto == "")
+//                nimError = (nim == "")
+//                noTeleponError = (noTelepon == "")
+//                noGedungKamarError = (noGedungKamar == "")
+//                if (namaLengkapError || emailError || passwordError || fotoError || nimError || noTeleponError || noGedungKamarError) return@Button
             },
             modifier = Modifier.padding(top = 8.dp),
             contentPadding = PaddingValues(horizontal = 32.dp, vertical = 16.dp)

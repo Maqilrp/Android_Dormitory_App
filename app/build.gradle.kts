@@ -1,6 +1,12 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+
+    // firebase
+    id("com.google.gms.google-services")
+
+    //room
+//    id("androidx.room")
 }
 
 android {
@@ -60,6 +66,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.navigation:navigation-compose:2.7.7")
+    implementation("com.google.firebase:firebase-auth:23.0.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -75,4 +82,19 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.7.7")
     // foundation
     implementation("androidx.compose.foundation:foundation:1.6.7")
+
+    // firebase bom
+    implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation ("com.google.firebase:firebase-firestore-ktx")
+
+    // For data handling (use your preferred solution)
+//    implementation("androidx.room:room-runtime:2.6.1") // or your version
+//    implementation("androidx.room:room-ktx:2.6.1") // or your version
+//    ksp("androidx.room:room-compiler:2.6.1") // or your version
+
+    // For network requests
+//    implementation("com.squareup.retrofit2:retrofit:2.9.0") // or your version
+//    implementation("com.squareup.retrofit2:converter-gson:2.9.0") // or your version
+//    implementation("com.squareup.okhttp3:logging-interceptor:4.10.0") // or your version
 }
