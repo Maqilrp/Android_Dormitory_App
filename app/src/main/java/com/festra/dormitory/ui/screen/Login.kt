@@ -1,5 +1,6 @@
 package com.festra.dormitory.ui.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,10 +35,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.festra.dormitory.R
 import com.festra.dormitory.navigation.Screen
+import com.festra.dormitory.ui.theme.DormitoryAppTheme
+import com.google.firebase.auth.FirebaseAuth
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -88,13 +93,14 @@ fun Login(navController: NavController) {
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun LoginContent(modifier: Modifier, navController: NavController) {
-    val context = LocalContext.current
+    val context = LocalContext.current // Retrieve the context
     val keyboardController = LocalSoftwareKeyboardController.current
 
+    // State variables for email and password fields
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
 
-    // Variabel untuk menampilkan pesan error jika input kosong
+    // State variables for displaying error messages
     var emailErrorText by remember { mutableStateOf("") }
     var passwordErrorText by remember { mutableStateOf("") }
 
@@ -105,7 +111,7 @@ fun LoginContent(modifier: Modifier, navController: NavController) {
     ) {
         Spacer(modifier = Modifier.weight(1f))
 
-        // Text "LOGIN FESTRA" above the name input
+        // Title above the login inputs
         Text(
             text = "LOGIN FESTRA",
             style = MaterialTheme.typography.bodyLarge,
@@ -113,13 +119,9 @@ fun LoginContent(modifier: Modifier, navController: NavController) {
             textAlign = TextAlign.Center,
         )
 
-        Spacer(modifier = Modifier.height(10.dp)) // Increased the spacer height
-
+        Spacer(modifier = Modifier.height(10.dp))
         Divider(Modifier.padding(vertical = 1.dp))
-
         Spacer(modifier = Modifier.height(30.dp))
-
-        Spacer(modifier = Modifier.height(16.dp))
 
         // Input field for email
         Column(
@@ -134,13 +136,13 @@ fun LoginContent(modifier: Modifier, navController: NavController) {
                 value = email.value,
                 onValueChange = {
                     email.value = it
-                    emailErrorText = ""
+                    emailErrorText = "" // Clear error message when input changes
                 },
                 modifier = Modifier.fillMaxWidth(),
-                label = { Text("Email")},
+                label = { Text("Email") },
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
             )
-            // Menampilkan pesan error jika input kosong
+            // Display error message if email field is empty
             Text(
                 text = emailErrorText,
                 color = Color.Red,
@@ -151,7 +153,7 @@ fun LoginContent(modifier: Modifier, navController: NavController) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Container for Password
+        // Input field for password
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -164,14 +166,14 @@ fun LoginContent(modifier: Modifier, navController: NavController) {
                 value = password.value,
                 onValueChange = {
                     password.value = it
-                    passwordErrorText = ""
+                    passwordErrorText = "" // Clear error message when input changes
                 },
                 modifier = Modifier.fillMaxWidth(),
                 label = { Text("Password") },
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
             )
-            // Menampilkan pesan error jika input kosong
+            // Display error message if password field is empty
             Text(
                 text = passwordErrorText,
                 color = Color.Red,
@@ -185,29 +187,48 @@ fun LoginContent(modifier: Modifier, navController: NavController) {
         // Button to submit login
         Button(
             onClick = {
-                // Validasi input kosong sebelum mengirimkan permintaan login
+                // Validate input fields
                 if (email.value.isEmpty()) {
-                    emailErrorText = "Email tidak boleh kosong"
+                    emailErrorText = "Email cannot be empty"
                     return@Button
                 }
                 if (password.value.isEmpty()) {
-                    passwordErrorText = "Password tidak boleh kosong"
+                    passwordErrorText = "Password cannot be empty"
                     return@Button
                 }
-                // Handle login logic here
-                navController.navigate(Screen.Home.route)
+
+                // Firebase authentication logic
+                FirebaseAuth.getInstance().signInWithEmailAndPassword(email.value, password.value)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            // Sign in success, navigate to home screen
+                            navController.navigate(Screen.Home.route)
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    }
             },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("SIGN IN")
         }
-        
-//        Text(text = "h",Modifier.clickable { navController.navigate(Screen.Register.route) })
+
+        // Button to navigate to the registration screen
         Button(
-            onClick = {navController.navigate(Screen.Register.route)},
+            onClick = { navController.navigate(Screen.Register.route) },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(text = "Register")
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun LoginPreview() {
+    DormitoryAppTheme {
+        Login(rememberNavController())
     }
 }
