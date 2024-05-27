@@ -1,6 +1,5 @@
 package com.festra.dormitory.ui.screen
 
-import android.content.res.Configuration
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -94,7 +93,7 @@ fun ScreenContent(modifier: Modifier, navController: NavHostController) {
     var fotoError by rememberSaveable { mutableStateOf(false) }
     var nim by rememberSaveable { mutableStateOf("") }
     var nimError by rememberSaveable { mutableStateOf(false) }
-    var noTelepon by rememberSaveable { mutableStateOf("") }
+    var noTelephone by rememberSaveable { mutableStateOf("") }
     var noTeleponError by rememberSaveable { mutableStateOf(false) }
     var noGedungKamar by rememberSaveable { mutableStateOf("") }
     var noGedungKamarError by rememberSaveable { mutableStateOf(false) }
@@ -184,8 +183,8 @@ fun ScreenContent(modifier: Modifier, navController: NavHostController) {
             shape = RoundedCornerShape(16.dp)
         )
         OutlinedTextField(
-            value = noTelepon,
-            onValueChange = { noTelepon = it },
+            value = noTelephone,
+            onValueChange = { noTelephone = it },
             label = { Text(text = stringResource(R.string.nomor_telepon)) },
             isError = noTeleponError,
             trailingIcon = { IconPicker(noTeleponError) },
@@ -226,16 +225,23 @@ fun ScreenContent(modifier: Modifier, navController: NavHostController) {
                             "password" to  password,
                             "foto" to  foto,
                             "nim" to  nim,
-                            "noTelephone" to  noTelepon,
+                            "noTelephone" to  noTelephone,
                             "noGedungKamar" to  noGedungKamar,
                         )
                         userId?.let {
-                            firestore.collection("users").document(it).set(userData)
+                            firestore.collection("users").document(userId).set(userData)
                                 .addOnSuccessListener {
-                                    navController.navigate(Screen.Login.route)
-                                }
-                                .addOnFailureListener {
-                                    Toast.makeText(context,"Fail",Toast.LENGTH_SHORT).show()
+                                    // verify the document
+                                    firestore.collection("users").document(userId).get().addOnSuccessListener { document ->
+                                        if (document.exists()){
+                                            Toast.makeText(context, "User registered successfully", Toast.LENGTH_SHORT).show()
+                                            navController.navigate(Screen.Login.route)
+                                        }
+                                        else {
+                                            Toast.makeText(context, "Fail", Toast.LENGTH_SHORT)
+                                                .show()
+                                        }
+                                    }
                                 }
                         }
                     }
