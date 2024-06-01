@@ -1,7 +1,9 @@
 package com.festra.dormitory.ui.screen.admin
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -21,9 +24,12 @@ import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.ShoppingCart
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -35,6 +41,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -178,42 +185,82 @@ fun AirMinumContent() {
             Column(
                 modifier = Modifier.padding(16.dp)
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.paket), // ganti dengan resource gambar profil
-                        contentDescription = "Profile",
-                        modifier = Modifier
-                            .size(48.dp)
-                            .background(Color.Gray, CircleShape)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Column {
-                        Text(
-                            text = "Jacob Jones",
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Text(
-                            text = "6706220090",
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Light
-                        )
+                // Header
+                Text(
+                    text = "Air Minum Fitur",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+
+                // Info Rows
+                InfoRow(label = "info:", value = "info")
+                InfoRow(label = "info:", value = "info")
+                InfoRow(label = "Status:", value = "info", hasDropdown = true)
+
+                // Buttons Row
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    Button(onClick = { /* Accept action */ }) {
+                        Text("Accept")
                     }
-                    Spacer(modifier = Modifier.weight(1f))
-                    Text(
-                        text = "IZIN",
-                        color = Color.Green,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-                Spacer(modifier = Modifier.height(8.dp))
-                Column {
-                    Text("Status", fontSize = 14.sp, fontWeight = FontWeight.Light)
-                    Text("Phone number", fontSize = 14.sp, fontWeight = FontWeight.Light)
-                    Text("Gedung", fontSize = 14.sp, fontWeight = FontWeight.Light)
-                    Text("Alasan", fontSize = 14.sp, fontWeight = FontWeight.Light)
+                    Button(onClick = { /* Decline action */ }) {
+                        Text("Decline")
+                    }
+                    Button(onClick = { /* Detail action */ }) {
+                        Text("Detail")
+                    }
                 }
             }
         }
     }
 }
+
+@Composable
+fun InfoRow(label: String, value: String, hasDropdown: Boolean = false) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = label,
+            fontWeight = FontWeight.Light,
+            fontSize = 14.sp,
+            modifier = Modifier.weight(1f)
+        )
+        if (hasDropdown) {
+            DropdownMenu()
+        } else {
+            Text(
+                text = value,
+                fontWeight = FontWeight.Light,
+                fontSize = 14.sp,
+                modifier = Modifier.weight(1f)
+            )
+        }
+    }
+}
+
+@Composable
+fun DropdownMenu() {
+    // Implement the dropdown menu here
+    Box(
+        modifier = Modifier
+            .background(Color.Gray)
+            .padding(8.dp)
+            .size(24.dp)
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_arrow_drop_down), // Replace with your dropdown icon
+            contentDescription = "Dropdown",
+            tint = Color.Black
+        )
+    }
+}
+
+
+
