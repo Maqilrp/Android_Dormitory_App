@@ -163,42 +163,36 @@ fun GedungContent() {
             Column(
                 modifier = Modifier.padding(16.dp)
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.paket), // ganti dengan resource gambar profil
-                        contentDescription = "Profile",
-                        modifier = Modifier
-                            .size(48.dp)
-                            .background(Color.Gray, CircleShape)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Column {
-                        Text(
-                            text = "Jacob Jones",
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Text(
-                            text = "6706220090",
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Light
-                        )
+                // Header
+                Text(
+                    text = "Air Minum Fitur",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+
+                // Info Rows
+                InfoRow(label = "info:", value = "info")
+                InfoRow(label = "info:", value = "info")
+                InfoRow(label = "Status:", value = "info", hasDropdown = true)
+
+                // Buttons Row
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    Button(onClick = { /* Accept action */ }) {
+                        Text("Accept")
                     }
-                    Spacer(modifier = Modifier.weight(1f))
-                    Text(
-                        text = "IZIN",
-                        color = Color.Green,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-                Spacer(modifier = Modifier.height(8.dp))
-                Column {
-                    Text("Status", fontSize = 14.sp, fontWeight = FontWeight.Light)
-                    Text("Phone number", fontSize = 14.sp, fontWeight = FontWeight.Light)
-                    Text("Gedung", fontSize = 14.sp, fontWeight = FontWeight.Light)
-                    Text("Alasan", fontSize = 14.sp, fontWeight = FontWeight.Light)
+                    Button(onClick = { /* Decline action */ }) {
+                        Text("Decline")
+                    }
+                    Button(onClick = { /* Detail action */ }) {
+                        Text("Detail")
+                    }
                 }
             }
         }
     }
 }
+
