@@ -2,12 +2,15 @@ package com.festra.dormitory.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.festra.dormitory.ui.screen.AboutScreen
 import com.festra.dormitory.ui.screen.AirminumScreen
 import com.festra.dormitory.ui.screen.AturanScreen
+import com.festra.dormitory.ui.screen.DetailScreen
 import com.festra.dormitory.ui.screen.HistoryScreen
 import com.festra.dormitory.ui.screen.HomeScreen
 import com.festra.dormitory.ui.screen.LaundryScreen
@@ -139,6 +142,13 @@ fun SetupNavGraph(
             route = Screen.Admin_Paket.route
         ) {
             Admin_Paket(navController)
+        }
+        composable(
+            route = Screen.Detail.route + "/{title}",
+            arguments = listOf(navArgument("title") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val title = backStackEntry.arguments?.getString("title")
+            title?.let { DetailScreen(navController = navController, title = it) }
         }
     }
 }

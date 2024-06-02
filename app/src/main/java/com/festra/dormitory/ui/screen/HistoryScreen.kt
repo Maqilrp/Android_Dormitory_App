@@ -51,8 +51,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.festra.dormitory.R
+import com.festra.dormitory.navigation.Screen
 import com.festra.dormitory.ui.theme.DormitoryAppTheme
 
 @Composable
@@ -149,7 +152,7 @@ fun HistoryScreen(navController: NavController) {
 fun HistoryContent(modifier: Modifier = Modifier, navController: NavController) {
     Column(
         modifier = modifier
-            .verticalScroll(rememberScrollState()) // Menambahkan verticalScroll di sini
+            .verticalScroll(rememberScrollState())
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -159,31 +162,31 @@ fun HistoryContent(modifier: Modifier = Modifier, navController: NavController) 
                 imageRes = R.drawable.perizinan,
                 title = "Perizinan",
                 description = "Users dapat menggunakan fitur ini untuk menguruskan perizinan di area asrama.",
-                destination = "perizinan"
+                destination = "detail/perizinan"
             ),
             HistoryItem(
                 imageRes = R.drawable.laundry,
                 title = "Laundry",
                 description = "Fitur ini menyediakan seluruh informasi pengelolaan laundry para penghuni asrama.",
-                destination = "laundry"
+                destination = "detail/laundry"
             ),
             HistoryItem(
                 imageRes = R.drawable.airminum,
                 title = "Air Minum",
                 description = "Fitur ini membantu pengelolaan asrama agar dapat memenuhi persediaan air minum penghuni.",
-                destination = "air_minum"
+                destination = "detail/air_minum"
             ),
             HistoryItem(
                 imageRes = R.drawable.listrik,
                 title = "Listrik",
                 description = "Membantu pengguna untuk mengontrol dan menambah token listrik untuk listrik asrama.",
-                destination = "listrik"
+                destination = "detail/listrik"
             ),
             HistoryItem(
                 imageRes = R.drawable.paket,
                 title = "Paket",
                 description = "Informasi pengiriman paket masuk dan keluar asrama, serta memastikan keamanan dan keakuratan.",
-                destination = "paket"
+                destination = "detail/paket"
             )
         )
 
@@ -206,7 +209,7 @@ fun HistoryCard(item: HistoryItem, navController: NavController) {
         shape = RoundedCornerShape(8.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { navController.navigate(item.destination) }
+            .clickable { navController.navigate(Screen.Detail.route + "/${item.title}") }
             .background(Color.White)
             .padding(8.dp),
         elevation = CardDefaults.cardElevation(4.dp)
@@ -241,7 +244,7 @@ fun HistoryCard(item: HistoryItem, navController: NavController) {
                     modifier = Modifier.padding(vertical = 4.dp)
                 )
                 Button(
-                    onClick = { navController.navigate(item.destination) },
+                    onClick = { navController.navigate(Screen.Detail.route + "/${item.title}") },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                 ) {
                     Text(text = "Go ${item.title}")
@@ -250,6 +253,18 @@ fun HistoryCard(item: HistoryItem, navController: NavController) {
         }
     }
 }
+
+//@Composable
+//fun AppNavigation() {
+//    val navController = rememberNavController()
+//    NavHost(navController, startDestination = "history") {
+//        composable("history") { HistoryScreen(navController) }
+//        composable("detail/{title}") { backStackEntry ->
+//            val title = backStackEntry.arguments?.getString("title")
+//            title?.let { DetailScreen(it) }
+//        }
+//    }
+//}
 
 @Preview(showBackground = true)
 @Composable

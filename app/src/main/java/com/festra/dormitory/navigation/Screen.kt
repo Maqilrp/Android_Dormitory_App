@@ -24,4 +24,5 @@ sealed class Screen(
     data object Admin_Laundry: Screen("Laundryadmin")
     data object Admin_Listrik: Screen("Listrikadmin")
     data object Admin_Paket: Screen("Paketadmin")
+    data object Detail: Screen("detail")
 }
