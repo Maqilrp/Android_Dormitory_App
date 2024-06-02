@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.festra.dormitory.R
-import com.festra.dormitory.ui.screen.BottomNavigationItem
+import com.festra.dormitory.ui.screen.mahasiswa.BottomNavigationItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

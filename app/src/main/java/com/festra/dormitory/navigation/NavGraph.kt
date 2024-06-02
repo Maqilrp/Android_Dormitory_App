@@ -5,16 +5,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.festra.dormitory.ui.screen.AboutScreen
-import com.festra.dormitory.ui.screen.AirminumScreen
-import com.festra.dormitory.ui.screen.AturanScreen
-import com.festra.dormitory.ui.screen.HistoryScreen
-import com.festra.dormitory.ui.screen.HomeScreen
-import com.festra.dormitory.ui.screen.LaundryScreen
-import com.festra.dormitory.ui.screen.ListrikScreen
+import com.festra.dormitory.ui.screen.AdminProfile
 import com.festra.dormitory.ui.screen.Login
-import com.festra.dormitory.ui.screen.PaketScreen
-import com.festra.dormitory.ui.screen.PerizinanScreen
 import com.festra.dormitory.ui.screen.ProfileScreen
 import com.festra.dormitory.ui.screen.RegisterScreen
 import com.festra.dormitory.ui.screen.admin.Admin_AirMinum
@@ -26,6 +18,15 @@ import com.festra.dormitory.ui.screen.admin.Admin_Perizinan
 import com.festra.dormitory.ui.screen.admin.Admin_Users
 import com.festra.dormitory.ui.screen.admin.Admin_mahasiswa
 import com.festra.dormitory.ui.screen.admin.HomeAdmin
+import com.festra.dormitory.ui.screen.mahasiswa.AboutScreen
+import com.festra.dormitory.ui.screen.mahasiswa.AirminumScreen
+import com.festra.dormitory.ui.screen.mahasiswa.AturanScreen
+import com.festra.dormitory.ui.screen.mahasiswa.HistoryScreen
+import com.festra.dormitory.ui.screen.mahasiswa.HomeScreen
+import com.festra.dormitory.ui.screen.mahasiswa.LaundryScreen
+import com.festra.dormitory.ui.screen.mahasiswa.ListrikScreen
+import com.festra.dormitory.ui.screen.mahasiswa.PaketScreen
+import com.festra.dormitory.ui.screen.mahasiswa.PerizinanScreen
 
 @Composable
 fun SetupNavGraph(
@@ -33,7 +34,7 @@ fun SetupNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Admin_mahasiswa.route
+        startDestination = Screen.Login.route
     ) {
         composable(
             route = Screen.Login.route
@@ -94,6 +95,13 @@ fun SetupNavGraph(
             route = Screen.Paket.route
         ) {
             PaketScreen(navController)
+        }
+
+        // admin
+        composable(
+            route = Screen.AdminProfile.route
+        ){
+            AdminProfile(navController)
         }
         composable(
                 route = Screen.HomeAdmin.route

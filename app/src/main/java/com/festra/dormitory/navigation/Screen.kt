@@ -3,6 +3,7 @@ package com.festra.dormitory.navigation
 sealed class Screen(
     val route: String
 ) {
+    // mahasiswa screen
     data object Login: Screen("login")
     data object Register: Screen("register")
     data object Home: Screen("home")
@@ -15,8 +16,12 @@ sealed class Screen(
     data object Airminum: Screen("airminum")
     data object Listrik: Screen("listrik")
     data object Paket: Screen("paket")
+
+
+    // admin screen
+    data object AdminProfile: Screen("Profile Admin")
+    data object HomeAdmin: Screen("Home Admin")
     data object Admin_mahasiswa: Screen("awalogin")
-    data object HomeAdmin: Screen("homeadmin")
     data object Admin_AirMinum: Screen("airminumadmin")
     data object Admin_Users: Screen("Usersadmin")
     data object Admin_Gedung: Screen("Gedungadmin")

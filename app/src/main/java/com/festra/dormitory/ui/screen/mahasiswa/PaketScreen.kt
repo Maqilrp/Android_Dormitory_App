@@ -1,19 +1,13 @@
-package com.festra.dormitory.ui.screen
+package com.festra.dormitory.ui.screen.mahasiswa
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -30,9 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -42,18 +34,18 @@ import com.festra.dormitory.navigation.Screen
 import com.festra.dormitory.ui.component.BottomBarNavigationComponent
 import com.festra.dormitory.ui.theme.DormitoryAppTheme
 
-
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun ProfileScreen(navController: NavController) {
+fun PaketScreen(navController: NavController) {
     // data store
 //    val dataStore = SettingsDataStore(LocalContext.current)
 //    val showList by dataStore.layoutFlow.collectAsState(true)
 
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text(text = "Profile") },
+                title = { Text(text = "Paket") },
                 colors = TopAppBarDefaults.mediumTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.surfaceBright,
                     titleContentColor = MaterialTheme.colorScheme.primary
@@ -82,23 +74,20 @@ fun ProfileScreen(navController: NavController) {
             )
         },
         bottomBar = {
-                BottomBarNavigationComponent(navController = navController, selectedIconIndex = 2)
+            BottomBarNavigationComponent(navController = navController, selectedIconIndex = null)
         }
     ) { paddingValues ->
-        ProfileContent(modifier = Modifier.padding(paddingValues), navController)
+        PaketItem(modifier = Modifier.padding(paddingValues), navController)
     }
 }
 
-
 @Composable
-fun ProfileContent(modifier: Modifier, navController: NavController) {
-    var fullName by remember { mutableStateOf(TextFieldValue("")) }
-    var email by remember { mutableStateOf(TextFieldValue("")) }
+fun PaketItem(modifier: Modifier = Modifier, navController: NavController) {
+    var namaLengkap by remember { mutableStateOf(TextFieldValue("")) }
     var nim by remember { mutableStateOf(TextFieldValue("")) }
-    var phoneNumber by remember { mutableStateOf(TextFieldValue("")) }
-    var buildingNumber by remember { mutableStateOf(TextFieldValue("")) }
-    var roomNumber by remember { mutableStateOf(TextFieldValue("")) }
-    var photo by remember { mutableStateOf<Painter?>(null) }
+    var nomorGedungKamar by remember { mutableStateOf(TextFieldValue("")) }
+    var buktiGambar by remember { mutableStateOf(TextFieldValue("")) }
+    var nomorTelepon by remember { mutableStateOf(TextFieldValue("")) }
 
     Column(
         modifier = modifier
@@ -107,33 +96,11 @@ fun ProfileContent(modifier: Modifier, navController: NavController) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Placeholder for profile image
-        Box(
-            modifier = Modifier
-                .size(100.dp)
-                .clip(CircleShape)
-                .background(Color.LightGray)
-                .clickable { /* Handle photo selection */ },
-            contentAlignment = Alignment.Center
-        ) {
-            if (photo == null) {
-                Text(text = "Foto Mahasiswa/i", color = Color.DarkGray)
-            } else {
-                Image(painter = photo!!, contentDescription = "Foto Mahasiswa/i")
-            }
-        }
-        Spacer(modifier = Modifier.height(16.dp))
         // Input fields
         OutlinedTextField(
-            value = fullName,
-            onValueChange = { fullName = it },
+            value = namaLengkap,
+            onValueChange = { namaLengkap = it },
             label = { Text("Nama Lengkap") }
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(
-            value = email,
-            onValueChange = { email = it },
-            label = { Text("Email Address") }
         )
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
@@ -143,21 +110,21 @@ fun ProfileContent(modifier: Modifier, navController: NavController) {
         )
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
-            value = phoneNumber,
-            onValueChange = { phoneNumber = it },
+            value = nomorGedungKamar,
+            onValueChange = { nomorGedungKamar = it },
+            label = { Text("Nomor Gedung & Kamar") }
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        OutlinedTextField(
+            value = buktiGambar,
+            onValueChange = { buktiGambar = it },
+            label = { Text("Bukti Gambar") }
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        OutlinedTextField(
+            value = nomorTelepon,
+            onValueChange = { nomorTelepon = it },
             label = { Text("Nomor Telepon") }
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(
-            value = buildingNumber,
-            onValueChange = { buildingNumber = it },
-            label = { Text("Nomor Gedung") }
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(
-            value = roomNumber,
-            onValueChange = { roomNumber = it },
-            label = { Text("Nomor Kamar") }
         )
         Spacer(modifier = Modifier.height(16.dp))
         // Submit and Cancel buttons
@@ -179,11 +146,10 @@ fun ProfileContent(modifier: Modifier, navController: NavController) {
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
-fun ProfilePreview() {
+fun PaketPreview() {
     DormitoryAppTheme {
-        ProfileScreen(rememberNavController())
+        PaketScreen(rememberNavController())
     }
 }

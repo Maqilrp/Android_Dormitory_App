@@ -32,8 +32,6 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -50,8 +48,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.festra.dormitory.ui.screen.BottomNavigationItem
-import com.festra.dormitory.ui.screen.admin.AdminMenuButton
+import com.festra.dormitory.ui.component.BottomBarAdminNavigationComponent
+import com.festra.dormitory.ui.screen.mahasiswa.BottomNavigationItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -87,25 +85,7 @@ fun HomeAdmin(navController: NavController) {
             )
         },
         bottomBar = {
-            NavigationBar {
-                items.forEachIndexed { index, item ->
-                    NavigationBarItem(
-                        selected = selectedIconIndex == index,
-                        onClick = {
-                            selectedIconIndex = index
-                            navController.navigate(item.title)
-                        },
-                        label = { Text(text = item.title) },
-                        alwaysShowLabel = false,
-                        icon = {
-                            Icon(
-                                imageVector = if (index == selectedIconIndex) item.selectedIcon else item.unselectedIcon,
-                                contentDescription = item.title
-                            )
-                        }
-                    )
-                }
-            }
+            BottomBarAdminNavigationComponent(navController = navController, selectedIconIndex = 0)
         }
     ) { paddingValues ->
         HomeContent(modifier = Modifier.padding(paddingValues), navController = navController)

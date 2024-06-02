@@ -79,7 +79,7 @@ dependencies {
     //    material3
     implementation("androidx.compose.material3:material3:1.2.1")
 
-//    navigation
+    //    navigation
     implementation("androidx.navigation:navigation-compose:2.7.7")
     // foundation
     implementation("androidx.compose.foundation:foundation:1.6.7")
@@ -88,6 +88,13 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
     implementation("com.google.firebase:firebase-analytics")
     implementation ("com.google.firebase:firebase-firestore-ktx")
+
+    // permission
+//    implementation ("com.google.accompanist:accompanist-permissions:0.23.0")
+//    implementation ("com.google.accompanist:accompanist-glide:0.23.0")
+
+    //coil
+//    implementation("io.coil-kt:coil-compose:2.6.0")
 
     // For data handling (use your preferred solution)
 //    implementation("androidx.room:room-runtime:2.6.1") // or your version
