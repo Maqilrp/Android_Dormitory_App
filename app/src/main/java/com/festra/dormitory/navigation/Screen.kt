@@ -4,6 +4,7 @@ sealed class Screen(
     val route: String
 ) {
     // mahasiswa screen
+    data object SplashScreen: Screen("splash")
     data object Login: Screen("login")
     data object Register: Screen("register")
     data object Home: Screen("home")

@@ -19,6 +19,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddCard
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.PermIdentity
+import androidx.compose.material.icons.filled.PhoneInTalk
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.filled.Warning
@@ -182,6 +188,7 @@ fun ScreenContent(modifier: Modifier, navController: NavHostController) {
             value = namaLengkap,
             onValueChange = { namaLengkap = it },
             label = { Text(text = stringResource(R.string.nama_lengkap)) },
+            leadingIcon = { Icon(imageVector = Icons.Filled.PermIdentity, contentDescription = "nama") },
             isError = namaLengkapError,
             trailingIcon = { IconPicker(namaLengkapError) },
             supportingText = { ErrorHint(errorType = ErrorType.InvalidName, isVisible = namaLengkapError) },
@@ -197,6 +204,7 @@ fun ScreenContent(modifier: Modifier, navController: NavHostController) {
             value = email,
             onValueChange = { email = it },
             label = { Text(text = stringResource(R.string.email)) },
+            leadingIcon = { Icon(imageVector = Icons.Filled.Email, contentDescription = "Email") },
             isError = emailError,
             trailingIcon = { IconPicker(emailError) },
             supportingText = { ErrorHint(errorType = ErrorType.InvalidEmail, isVisible = emailError) },
@@ -213,6 +221,7 @@ fun ScreenContent(modifier: Modifier, navController: NavHostController) {
             value = password,
             onValueChange = { password = it },
             label = { Text(text = stringResource(R.string.password)) },
+            leadingIcon = { Icon(imageVector = Icons.Filled.Lock, contentDescription = "Password") },
             isError = passwordError,
             trailingIcon = {
                            IconButton(onClick = { passwordVisible = !passwordVisible }) {
@@ -298,6 +307,7 @@ fun ScreenContent(modifier: Modifier, navController: NavHostController) {
             value = foto,
             onValueChange = { foto = it },
             label = { Text(text = stringResource(R.string.foto)) },
+            leadingIcon = { Icon(imageVector = Icons.Filled.Image, contentDescription = "Foto") },
             isError = fotoError,
             trailingIcon = { IconPicker(fotoError) },
             supportingText = { ErrorHint(errorType = ErrorType.InvalidFoto, isVisible = fotoError) },
@@ -313,6 +323,7 @@ fun ScreenContent(modifier: Modifier, navController: NavHostController) {
             value = nim,
             onValueChange = { nim = it },
             label = { Text(text = stringResource(R.string.nim)) },
+            leadingIcon = { Icon(imageVector = Icons.Filled.AddCard, contentDescription = "Nim") },
             isError = nimError,
             trailingIcon = { IconPicker(nimError) },
             supportingText = { ErrorHint(errorType = ErrorType.InvalidNim, isVisible = nimError) },
@@ -329,6 +340,7 @@ fun ScreenContent(modifier: Modifier, navController: NavHostController) {
             value = noTelephone,
             onValueChange = { noTelephone = it },
             label = { Text(text = stringResource(R.string.nomor_telepon)) },
+            leadingIcon = { Icon(imageVector = Icons.Filled.PhoneInTalk, contentDescription = "Telepon") },
             isError = noTeleponError,
             trailingIcon = { IconPicker(noTeleponError) },
             supportingText = { ErrorHint(errorType = ErrorType.InvalidNoTelephone, isVisible = noTeleponError) },
@@ -341,7 +353,8 @@ fun ScreenContent(modifier: Modifier, navController: NavHostController) {
             shape = RoundedCornerShape(16.dp)
         )
         // noGedungKamar textField
-        NoGedungKamarDropdown(selectedText = noGedungKamar, onSelectedTextChange = {noGedungKamar = it})
+        NoGedungKamarDropdown(selectedText = noGedungKamar, onSelectedTextChange = {noGedungKamar = it},)
+
 //        OutlinedTextField(
 //            value = noGedungKamar,
 //            onValueChange = { noGedungKamar = it },

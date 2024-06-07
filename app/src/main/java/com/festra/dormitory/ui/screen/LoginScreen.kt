@@ -14,9 +14,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -42,6 +46,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -83,6 +88,7 @@ fun Login(navController: NavController) {
                     .fillMaxWidth()
                     .padding(16.dp),
                 contentAlignment = Alignment.Center
+
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.asrama), // Gambar asrama
@@ -92,7 +98,10 @@ fun Login(navController: NavController) {
                 Text(
                     text = "Selamat Datang  Di\n" +
                             " Dormitory Application",
-                    style = MaterialTheme.typography.bodyLarge,
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    ),
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .padding(16.dp)
@@ -127,159 +136,169 @@ fun LoginContent(modifier: Modifier, navController: NavController) {
     // Cancellation state
     var isCancelled by rememberSaveable { mutableStateOf(false) }
 
-    Column(
+
+    Card(
         modifier = modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(16.dp),
+        elevation = CardDefaults.cardElevation(8.dp),
+        shape = RoundedCornerShape(16.dp)
     ) {
-        Spacer(modifier = Modifier.weight(1f))
-
-        // Title above the login inputs
-        Text(
-            text = "LOGIN FESTRA",
-            style = MaterialTheme.typography.bodyLarge,
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Center,
-        )
-
-        Spacer(modifier = Modifier.height(10.dp))
-        Divider(Modifier.padding(vertical = 1.dp))
-        Spacer(modifier = Modifier.height(30.dp))
-
-        // Input field for email
         Column(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.padding(16.dp)
         ) {
+            Spacer(modifier = Modifier.weight(1f))
+
+            // Title above the login inputs
             Text(
-                text = "Email Address",
+                text = "LOGIN FESTRA",
                 style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.padding(start = 4.dp)
-            )
-            TextField(
-                value = email.value,
-                onValueChange = {
-                    email.value = it
-                    emailErrorText = "" // Clear error message when input changes
-                },
                 modifier = Modifier.fillMaxWidth(),
-                label = { Text("Email") },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Next)
+                textAlign = TextAlign.Center,
             )
-            // Display error message if email field is empty
-            Text(
-                text = emailErrorText,
-                color = Color.Red,
-                style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.padding(start = 4.dp)
-            )
-        }
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(10.dp))
+            Divider(Modifier.padding(vertical = 1.dp))
+            Spacer(modifier = Modifier.height(30.dp))
 
-        // Input field for password
-        Column(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(
-                text = "Password",
-                style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.padding(start = 4.dp)
-            )
-            TextField(
-                value = password.value,
-                onValueChange = {
-                    password.value = it
-                    passwordErrorText = "" // Clear error message when input changes
-                },
-                modifier = Modifier.fillMaxWidth(),
-                label = { Text("Password") },
-                trailingIcon = {
-                    IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                        Icon(
-                            imageVector = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
-                            contentDescription = if (passwordVisible) "Hide Password" else "Show Password"
-                        )
-                    }
-                },
-                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done, autoCorrect = false),
-            )
-            // Display error message if password field is empty
-            Text(
-                text = passwordErrorText,
-                color = Color.Red,
-                style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.padding(start = 4.dp)
-            )
-        }
+            // Input field for email
+            Column(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = "Email Address",
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(start = 4.dp)
+                )
+                TextField(
+                    value = email.value,
+                    onValueChange = {
+                        email.value = it
+                        emailErrorText = "" // Clear error message when input changes
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    label = { Text("Email") },
+                    leadingIcon = { Icon(imageVector = Icons.Filled.Email, contentDescription = "Email") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Next)
+                )
+                // Display error message if email field is empty
+                Text(
+                    text = emailErrorText,
+                    color = Color.Red,
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(start = 4.dp)
+                )
+            }
 
-        Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-        // Button to submit login
-        Button(
-            onClick = {
-                // Validate input fields
-                if (email.value.isEmpty()) {
-                    emailErrorText = "Email cannot be empty"
-                    return@Button
-                }
-                if (password.value.isEmpty()) {
-                    passwordErrorText = "Password cannot be empty"
-                    return@Button
-                }
-
-                // show dialog statement true
-                showDialog = true
-                isCancelled = false
-
-                // Firebase authentication logic
-                FirebaseAuth.getInstance().signInWithEmailAndPassword(email.value, password.value)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            val user = task.result?.user
-                            user?.let {
-                                val db = FirebaseFirestore.getInstance()
-                                db.collection("users").document(it.uid).get()
-                                    .addOnSuccessListener { document ->
-                                        if (document != null && document.exists()) {
-                                            val role = document.getString("role") ?: false
-                                            if (role == "admin") {
-                                                navController.navigate(Screen.HomeAdmin.route)
-                                                Toast.makeText(context, "Login Admin Successful.", Toast.LENGTH_SHORT).show()
-                                            } else {
-                                                navController.navigate(Screen.Home.route)
-                                                Toast.makeText(context, "Login Mahasiswa Successful.", Toast.LENGTH_SHORT).show()
-                                            }
-                                        } else {
-                                            Toast.makeText(context, "User not found.", Toast.LENGTH_SHORT).show()
-                                        }
-                                    }
-                                    .addOnFailureListener { exception ->
-                                        Toast.makeText(context, "Failed to fetch user data.", Toast.LENGTH_SHORT).show()
-                                    }
-                                    .addOnCompleteListener {
-                                        showDialog = false
-                                    }
-                            }
-                        } else {
-                            Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show()
-                            showDialog = false
+            // Input field for password
+            Column(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = "Password",
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(start = 4.dp)
+                )
+                TextField(
+                    value = password.value,
+                    onValueChange = {
+                        password.value = it
+                        passwordErrorText = "" // Clear error message when input changes
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    label = { Text("Password") },
+                    leadingIcon = { Icon(imageVector = Icons.Filled.Lock, contentDescription = "Password Icon") },
+                    trailingIcon = {
+                        IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                            Icon(
+                                imageVector = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                                contentDescription = if (passwordVisible) "Hide Password" else "Show Password"
+                            )
                         }
-                    }
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("SIGN IN")
-        }
+                    },
+                    visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done, autoCorrect = false),
+                )
+                // Display error message if password field is empty
+                Text(
+                    text = passwordErrorText,
+                    color = Color.Red,
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(start = 4.dp)
+                )
+            }
 
-        // Button to navigate to the registration screen
-        Button(
-            onClick = { navController.navigate(Screen.Register.route) },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(text = "Register")
+            Spacer(modifier = Modifier.height(32.dp))
+
+            // Button to submit login
+            Button(
+                onClick = {
+                    // Validate input fields
+                    if (email.value.isEmpty()) {
+                        emailErrorText = "Email cannot be empty"
+                        return@Button
+                    }
+                    if (password.value.isEmpty()) {
+                        passwordErrorText = "Password cannot be empty"
+                        return@Button
+                    }
+
+                    // show dialog statement true
+                    showDialog = true
+                    isCancelled = false
+
+                    // Firebase authentication logic
+                    FirebaseAuth.getInstance().signInWithEmailAndPassword(email.value, password.value)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                val user = task.result?.user
+                                user?.let {
+                                    val db = FirebaseFirestore.getInstance()
+                                    db.collection("users").document(it.uid).get()
+                                        .addOnSuccessListener { document ->
+                                            if (document != null && document.exists()) {
+                                                val role = document.getString("role") ?: false
+                                                if (role == "admin") {
+                                                    navController.navigate(Screen.HomeAdmin.route)
+                                                    Toast.makeText(context, "Login Admin Successful.", Toast.LENGTH_SHORT).show()
+                                                } else {
+                                                    navController.navigate(Screen.Home.route)
+                                                    Toast.makeText(context, "Login Mahasiswa Successful.", Toast.LENGTH_SHORT).show()
+                                                }
+                                            } else {
+                                                Toast.makeText(context, "User not found.", Toast.LENGTH_SHORT).show()
+                                            }
+                                        }
+                                        .addOnFailureListener { exception ->
+                                            Toast.makeText(context, "Failed to fetch user data.", Toast.LENGTH_SHORT).show()
+                                        }
+                                        .addOnCompleteListener {
+                                            showDialog = false
+                                        }
+                                }
+                            } else {
+                                Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show()
+                                showDialog = false
+                            }
+                        }
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("SIGN IN")
+            }
+
+            // Button to navigate to the registration screen
+            Button(
+                onClick = { navController.navigate(Screen.Register.route) },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = "Register")
+            }
         }
     }
+
     // Show the loading dialog
     if (showDialog) {
         Dialog(

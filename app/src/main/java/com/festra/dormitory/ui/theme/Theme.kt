@@ -68,3 +68,4 @@ fun DormitoryAppTheme(
         content = content
     )
 }
+

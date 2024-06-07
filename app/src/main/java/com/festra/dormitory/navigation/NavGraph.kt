@@ -9,6 +9,7 @@ import com.festra.dormitory.ui.screen.AdminProfile
 import com.festra.dormitory.ui.screen.Login
 import com.festra.dormitory.ui.screen.ProfileScreen
 import com.festra.dormitory.ui.screen.RegisterScreen
+import com.festra.dormitory.ui.screen.SplashScreen
 import com.festra.dormitory.ui.screen.admin.Admin_AirMinum
 import com.festra.dormitory.ui.screen.admin.Admin_Gedung
 import com.festra.dormitory.ui.screen.admin.Admin_Laundry
@@ -34,8 +35,13 @@ fun SetupNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Login.route
+        startDestination = Screen.SplashScreen.route
     ) {
+        composable(
+            route = Screen.SplashScreen.route
+        ) {
+            SplashScreen(navController)
+        }
         composable(
             route = Screen.Login.route
         ) {

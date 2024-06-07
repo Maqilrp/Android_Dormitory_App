@@ -134,22 +134,33 @@ fun HomeContent(modifier: Modifier, navController: NavController) {
                     painter = painterResource(id = R.drawable.gambar_asrama),
                     contentDescription = "Asrama",
                 )
-                Column {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally // Center align horizontally
+                ) {
                     Text(
                         text = "Festra",
                         fontWeight = FontWeight.Bold,
-                        color = Color.Black,
+                        color = Color.White,
+                        fontSize = 24.sp, // You can adjust the font size as needed
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
                     )
+
+                    Spacer(modifier = Modifier.height(8.dp)) // Space between the title and the caption
 
                     Text(
                         text = "Aplikasi ini hadir untuk memberikan solusi terhadap segala masalah dan persoalan keperluan asrama yang dianytaranya ialah membantu para penghuni asrama untuk berkomunikasi dengan SR (Senior Residence), helpdesk, dan satpam. Serta menawarkan pembelian token listrik, laundry pakaian, pembelian galon, pengambilan paket, dan mengurus surat izin.",
                         maxLines = 3,
-                        textAlign = TextAlign.Justify,
+                        textAlign = TextAlign.Center, // Center align the caption text
                         color = Color.Black,
                         fontSize = 10.sp,
+                        modifier = Modifier.fillMaxWidth()
                     )
 
-                    Row(
+                Row(
                         modifier = modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceAround
 
@@ -164,7 +175,7 @@ fun HomeContent(modifier: Modifier, navController: NavController) {
                 }
             }
             Text(
-                text = "Apa Yang Anda Butuhkan",
+                text = "Apa Yang Anda Butuhkan ?",
                 fontWeight = FontWeight.Bold
             )
             Row(
