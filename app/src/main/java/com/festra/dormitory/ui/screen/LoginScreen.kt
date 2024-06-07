@@ -129,7 +129,7 @@ fun Login(navController: NavController, userViewModel: UserViewModel = viewModel
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun LoginContent(modifier: Modifier, navController: NavController) {
+fun LoginContent(modifier: Modifier, navController: NavController, userViewModel: UserViewModel) {
     val context = LocalContext.current // Retrieve the context
     val keyboardController = LocalSoftwareKeyboardController.current
 
