@@ -1,3 +1,5 @@
+@file:Suppress("LABEL_NAME_CLASH")
+
 package com.festra.dormitory.ui.screen
 
 import android.net.Uri
@@ -11,9 +13,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -21,6 +25,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddCard
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.PermIdentity
+import androidx.compose.material.icons.filled.PhoneInTalk
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.filled.Warning
@@ -41,10 +51,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -81,18 +94,23 @@ fun RegisterScreen(navController: NavHostController) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp),
+                        .padding(16.dp)
+                        .clip(RoundedCornerShape(8.dp)),
                     contentAlignment = Alignment.Center
                 ) {
                     Image(
                         painter = painterResource(R.drawable.asrama_780x470_jpeg),
                         contentDescription = stringResource(R.string.gambar_asrama),
                         modifier = Modifier.fillMaxWidth()
+                            .height(200.dp),
+                        contentScale = ContentScale.Crop
                     )
                     Text(
                         text = "Selamat Datang  Di\nDormitory Application",
                         style = MaterialTheme.typography.bodyLarge,
                         textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White,
                         modifier = Modifier
                             .padding(16.dp)
                             .align(Alignment.Center)
@@ -129,6 +147,11 @@ fun ScreenContent(modifier: Modifier, navController: NavHostController) {
     var noTeleponError by rememberSaveable { mutableStateOf(false) }
     var noGedungKamar by rememberSaveable { mutableStateOf("") }
     var noGedungKamarError by rememberSaveable { mutableStateOf(false) }
+
+    // role
+    var role by rememberSaveable {
+        mutableStateOf("")
+    }
 
     // firebase initialize
     val context = LocalContext.current
@@ -199,6 +222,7 @@ fun ScreenContent(modifier: Modifier, navController: NavHostController) {
             value = namaLengkap,
             onValueChange = { namaLengkap = it },
             label = { Text(text = stringResource(R.string.nama_lengkap)) },
+            leadingIcon = { Icon(imageVector = Icons.Filled.PermIdentity, contentDescription = "nama") },
             isError = namaLengkapError,
             trailingIcon = { IconPicker(namaLengkapError) },
             supportingText = {
@@ -219,6 +243,7 @@ fun ScreenContent(modifier: Modifier, navController: NavHostController) {
             value = email,
             onValueChange = { email = it },
             label = { Text(text = stringResource(R.string.email)) },
+            leadingIcon = { Icon(imageVector = Icons.Filled.Email, contentDescription = "Email") },
             isError = emailError,
             trailingIcon = { IconPicker(emailError) },
             supportingText = {
@@ -240,6 +265,7 @@ fun ScreenContent(modifier: Modifier, navController: NavHostController) {
             value = password,
             onValueChange = { password = it },
             label = { Text(text = stringResource(R.string.password)) },
+            leadingIcon = { Icon(imageVector = Icons.Filled.Lock, contentDescription = "Password") },
             isError = passwordError,
             trailingIcon = {
                 IconButton(onClick = { passwordVisible = !passwordVisible }) {
@@ -279,6 +305,7 @@ fun ScreenContent(modifier: Modifier, navController: NavHostController) {
             onValueChange = { foto = it },
             readOnly = true,
             label = { Text(text = stringResource(R.string.foto)) },
+            leadingIcon = { Icon(imageVector = Icons.Filled.Image, contentDescription = "Foto") },
             isError = fotoError,
             trailingIcon = { IconPicker(fotoError) },
             supportingText = {
@@ -309,6 +336,7 @@ fun ScreenContent(modifier: Modifier, navController: NavHostController) {
             value = nim,
             onValueChange = { nim = it },
             label = { Text(text = stringResource(R.string.nim)) },
+            leadingIcon = { Icon(imageVector = Icons.Filled.AddCard, contentDescription = "Nim") },
             isError = nimError,
             trailingIcon = { IconPicker(nimError) },
             supportingText = { ErrorHint(errorType = ErrorType.InvalidNim, isVisible = nimError) },
@@ -325,6 +353,7 @@ fun ScreenContent(modifier: Modifier, navController: NavHostController) {
             value = noTelephone,
             onValueChange = { noTelephone = it },
             label = { Text(text = stringResource(R.string.nomor_telepon)) },
+            leadingIcon = { Icon(imageVector = Icons.Filled.PhoneInTalk, contentDescription = "Telepon") },
             isError = noTeleponError,
             trailingIcon = { IconPicker(noTeleponError) },
             supportingText = {
@@ -353,15 +382,15 @@ fun ScreenContent(modifier: Modifier, navController: NavHostController) {
         ) {
             Button(
                 onClick = {
+                    // input validation
                     namaLengkapError = (namaLengkap == "")
+                    // email must use @gmail.com
                     emailError = !email.endsWith("@gmail.com")
                     passwordError = password.length <= 7
                     fotoError = (foto == "")
                     nimError = nim.length != 10
                     noTeleponError = noTelephone.length <= 10
                     noGedungKamarError = (noGedungKamar == "")
-
-
                     if (namaLengkapError || emailError || passwordError || fotoError || nimError || noTeleponError || noGedungKamarError) return@Button
 
                     showDialog = true
@@ -552,6 +581,7 @@ fun ErrorHint(errorType: ErrorType, isVisible: Boolean) {
         Text(text = errorMessage)
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable

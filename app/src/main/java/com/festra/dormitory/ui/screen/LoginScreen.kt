@@ -3,21 +3,30 @@ package com.festra.dormitory.ui.screen
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -35,12 +44,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -81,18 +95,26 @@ fun Login(navController: NavController, userViewModel: UserViewModel = viewModel
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
+                    .padding(16.dp)
+                .clip(RoundedCornerShape(8.dp)),
                 contentAlignment = Alignment.Center
+
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.asrama), // Gambar asrama
                     contentDescription = "Login Image",
                     modifier = Modifier.fillMaxWidth()
+                    .height(205.dp) // Set height as needed
+                    .clip(RoundedCornerShape(8.dp)), // Apply rounded corners to the image itself
+                contentScale = ContentScale.Crop
                 )
                 Text(
-                    text = "Selamat Datang Di\n" +
-                            "Dormitory Application",
-                    style = MaterialTheme.typography.bodyLarge,
+                    text = "Selamat Datang  Di\n" +
+                            " Dormitory Application",
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    ),
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .padding(16.dp)
@@ -104,115 +126,142 @@ fun Login(navController: NavController, userViewModel: UserViewModel = viewModel
     }
 }
 
-@Composable
-fun LoginContent(modifier: Modifier, navController: NavController, userViewModel: UserViewModel) {
-    val context = LocalContext.current
-    LocalSoftwareKeyboardController.current
 
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun LoginContent(modifier: Modifier, navController: NavController) {
+    val context = LocalContext.current // Retrieve the context
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    // State variables for email and password fields
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
 
+    // State variables for displaying error messages
     var emailErrorText by remember { mutableStateOf("") }
     var passwordErrorText by remember { mutableStateOf("") }
 
+    // Loading dialog state
     var showDialog by rememberSaveable { mutableStateOf(false) }
+    // Timeout state
+    var registrationTimeout by rememberSaveable { mutableStateOf(false) }
+    // Cancellation state
+    var isCancelled by rememberSaveable { mutableStateOf(false) }
 
-    Column(
+
+    Card(
         modifier = modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(16.dp),
+        elevation = CardDefaults.cardElevation(8.dp),
+        shape = RoundedCornerShape(16.dp)
     ) {
-        Spacer(modifier = Modifier.weight(1f))
-
-        Text(
-            text = "LOGIN FESTRA",
-            style = MaterialTheme.typography.bodyLarge,
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Center,
-        )
-
-        Spacer(modifier = Modifier.height(10.dp))
-        HorizontalDivider(Modifier.padding(vertical = 1.dp))
-        Spacer(modifier = Modifier.height(30.dp))
-
         Column(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.padding(16.dp)
         ) {
-            Text(
-                text = "Email Address",
-                style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.padding(start = 4.dp)
-            )
-            TextField(
-                value = email.value,
-                onValueChange = {
-                    email.value = it
-                    emailErrorText = ""
-                },
-                modifier = Modifier.fillMaxWidth(),
-                label = { Text("Email") },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Next)
-            )
-            Text(
-                text = emailErrorText,
-                color = Color.Red,
-                style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.padding(start = 4.dp)
-            )
-        }
+            Spacer(modifier = Modifier.weight(1f))
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Column(
-            modifier = Modifier.fillMaxWidth()
-        ) {
+            // Title above the login inputs
             Text(
-                text = "Password",
+                text = "LOGIN FESTRA",
                 style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.padding(start = 4.dp)
-            )
-            TextField(
-                value = password.value,
-                onValueChange = {
-                    password.value = it
-                    passwordErrorText = ""
-                },
+                fontWeight = FontWeight.Bold,
                 modifier = Modifier.fillMaxWidth(),
-                label = { Text("Password") },
-                trailingIcon = {
-                    IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                        Icon(
-                            imageVector = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
-                            contentDescription = if (passwordVisible) "Hide Password" else "Show Password"
-                        )
+                textAlign = TextAlign.Center,
+            )
+
+            Spacer(modifier = Modifier.height(10.dp))
+            Divider(Modifier.padding(vertical = 1.dp))
+            Spacer(modifier = Modifier.height(30.dp))
+
+            // Input field for email
+            Column(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = "Email Address",
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(start = 4.dp)
+                )
+                TextField(
+                    value = email.value,
+                    onValueChange = {
+                        email.value = it
+                        emailErrorText = "" // Clear error message when input changes
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    label = { Text("Email") },
+                    leadingIcon = { Icon(imageVector = Icons.Filled.Email, contentDescription = "Email") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Next)
+                )
+                // Display error message if email field is empty
+                Text(
+                    text = emailErrorText,
+                    color = Color.Red,
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(start = 4.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Input field for password
+            Column(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = "Password",
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(start = 4.dp)
+                )
+                TextField(
+                    value = password.value,
+                    onValueChange = {
+                        password.value = it
+                        passwordErrorText = "" // Clear error message when input changes
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    label = { Text("Password") },
+                    leadingIcon = { Icon(imageVector = Icons.Filled.Lock, contentDescription = "Password Icon") },
+                    trailingIcon = {
+                        IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                            Icon(
+                                imageVector = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                                contentDescription = if (passwordVisible) "Hide Password" else "Show Password"
+                            )
+                        }
+                    },
+                    visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done, autoCorrect = false),
+                )
+                // Display error message if password field is empty
+                Text(
+                    text = passwordErrorText,
+                    color = Color.Red,
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(start = 4.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            // Button to submit login
+            Button(
+                onClick = {
+                    // Validate input fields
+                    if (email.value.isEmpty()) {
+                        emailErrorText = "Email cannot be empty"
+                        return@Button
                     }
-                },
-                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done, autoCorrect = false),
-            )
-            Text(
-                text = passwordErrorText,
-                color = Color.Red,
-                style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.padding(start = 4.dp)
-            )
-        }
+                    if (password.value.isEmpty()) {
+                        passwordErrorText = "Password cannot be empty"
+                        return@Button
+                    }
 
-        Spacer(modifier = Modifier.height(32.dp))
-
-        Button(
-            onClick = {
-                if (email.value.isEmpty()) {
-                    emailErrorText = "Email cannot be empty"
-                    return@Button
-                }
-                if (password.value.isEmpty()) {
-                    passwordErrorText = "Password cannot be empty"
-                    return@Button
-                }
-
-                showDialog = true
+                    // show dialog statement true
+                    showDialog = true
+                    isCancelled = false
 
                 FirebaseAuth.getInstance().signInWithEmailAndPassword(email.value, password.value)
                     .addOnCompleteListener { task ->
@@ -255,18 +304,36 @@ fun LoginContent(modifier: Modifier, navController: NavController, userViewModel
             Text("SIGN IN")
         }
 
-        Button(
-            onClick = { navController.navigate(Screen.Register.route) },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(text = "Register")
+            // Button to navigate to the registration screen
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(text = "Belum punya akun?")
+
+                Spacer(modifier = Modifier.width(4.dp)) // Add some space between the texts
+
+                Text(
+                    text = "Register",
+                    style = TextStyle(fontWeight = FontWeight.Bold),
+                    modifier = Modifier.clickable { navController.navigate(Screen.Register.route) }
+                )
+            }
+
+
         }
     }
 
+    // Show the loading dialog
     if (showDialog) {
         Dialog(
             onDismissRequest = {
                 showDialog = false
+                registrationTimeout = false
+                isCancelled = true
             },
             DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false)
         ) {
