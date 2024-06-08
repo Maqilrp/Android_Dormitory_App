@@ -3,14 +3,18 @@ package com.festra.dormitory.ui.screen
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -48,6 +52,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -159,6 +164,7 @@ fun LoginContent(modifier: Modifier, navController: NavController) {
             Text(
                 text = "LOGIN FESTRA",
                 style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Bold,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
             )
@@ -236,7 +242,7 @@ fun LoginContent(modifier: Modifier, navController: NavController) {
                 )
             }
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             // Button to submit login
             Button(
@@ -296,12 +302,25 @@ fun LoginContent(modifier: Modifier, navController: NavController) {
             }
 
             // Button to navigate to the registration screen
-            Button(
-                onClick = { navController.navigate(Screen.Register.route) },
-                modifier = Modifier.fillMaxWidth()
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
             ) {
-                Text(text = "Register")
+                Text(text = "Belum punya akun?")
+
+                Spacer(modifier = Modifier.width(4.dp)) // Add some space between the texts
+
+                Text(
+                    text = "Register",
+                    style = TextStyle(fontWeight = FontWeight.Bold),
+                    modifier = Modifier.clickable { navController.navigate(Screen.Register.route) }
+                )
             }
+
+
         }
     }
 
