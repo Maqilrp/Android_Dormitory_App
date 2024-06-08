@@ -41,7 +41,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -86,7 +88,8 @@ fun Login(navController: NavController) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
+                    .padding(16.dp)
+                .clip(RoundedCornerShape(8.dp)),
                 contentAlignment = Alignment.Center
 
             ) {
@@ -94,6 +97,9 @@ fun Login(navController: NavController) {
                     painter = painterResource(id = R.drawable.asrama), // Gambar asrama
                     contentDescription = "Login Image",
                     modifier = Modifier.fillMaxWidth()
+                    .height(205.dp) // Set height as needed
+                    .clip(RoundedCornerShape(8.dp)), // Apply rounded corners to the image itself
+                contentScale = ContentScale.Crop
                 )
                 Text(
                     text = "Selamat Datang  Di\n" +
