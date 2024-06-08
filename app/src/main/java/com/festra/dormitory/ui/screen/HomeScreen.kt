@@ -25,6 +25,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -38,6 +40,8 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -70,6 +74,8 @@ fun HomeScreen(navController: NavController) {
     // data store
 //    val dataStore = SettingsDataStore(LocalContext.current)
 //    val showList by dataStore.layoutFlow.collectAsState(true)
+
+    var expanded by remember { mutableStateOf(false) }
 
     val items = listOf(
         BottomNavigationItem(
@@ -121,11 +127,32 @@ fun HomeScreen(navController: NavController) {
 //                            tint = MaterialTheme.colorScheme.primary
 //                        )
 //                    }
-                    IconButton(onClick = { navController.navigate(Screen.Profile.route) }) {
-                        Icon(
-                            imageVector = Icons.Filled.AccountCircle,
-                            contentDescription = "Profile"
-                        )
+                    Box {
+                        IconButton(onClick = { expanded = true }) {
+                            Icon(
+                                imageVector = Icons.Filled.AccountCircle,
+                                contentDescription = "Opsi"
+                            )
+                        }
+                        DropdownMenu(
+                            expanded = expanded,
+                            onDismissRequest = { expanded = false }
+                        ) {
+                            DropdownMenuItem(
+                                text = { Text("Profile") },
+                                onClick = {
+                                    navController.navigate(Screen.Profile.route)
+                                    expanded = false
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text("Log Out") },
+                                onClick = {
+//                                    Logic LogOut
+                                    expanded = false
+                                }
+                            )
+                        }
                     }
                 }
             )
@@ -180,9 +207,11 @@ fun HomeContent(modifier: Modifier, navController: NavController) {
                 modifier = modifier.padding(1.dp)
             )
             // gambar asrama
-            Box {
+            Box(
+                modifier = Modifier.padding(horizontal = 16.dp).clip(RoundedCornerShape(16.dp))
+            ) {
                 Image(
-                    modifier = Modifier.clip(shape = RoundedCornerShape(16.dp)),
+                    modifier = Modifier.fillMaxWidth().clip(shape = RoundedCornerShape(16.dp)),
                     painter = painterResource(id = R.drawable.gambar_asrama),
                     contentDescription = "Asrama",
                 )
@@ -192,7 +221,6 @@ fun HomeContent(modifier: Modifier, navController: NavController) {
                         fontWeight = FontWeight.Bold,
                         color = Color.Black,
                     )
-
                     Text(
                         text = "Aplikasi ini hadir untuk memberikan solusi terhadap segala masalah dan persoalan keperluan asrama yang dianytaranya ialah membantu para penghuni asrama untuk berkomunikasi dengan SR (Senior Residence), helpdesk, dan satpam. Serta menawarkan pembelian token listrik, laundry pakaian, pembelian galon, pengambilan paket, dan mengurus surat izin.",
                         maxLines = 3,
@@ -200,13 +228,13 @@ fun HomeContent(modifier: Modifier, navController: NavController) {
                         color = Color.Black,
                         fontSize = 10.sp,
                     )
-
                     Row(
                         modifier = modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceAround
-
                     ) {
-                        Button(onClick = { navController.navigate(Screen.About.route) }) {
+                        Button(
+                            onClick = { navController.navigate(Screen.About.route) }
+                        ) {
                             Text(text = "Profil Asrama")
                         }
                         Button(onClick = { navController.navigate(Screen.Aturan.route) }) {
