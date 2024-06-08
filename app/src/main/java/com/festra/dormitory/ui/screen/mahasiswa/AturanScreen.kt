@@ -128,22 +128,63 @@ fun AturanContent(
                     .height(200.dp)
                     .padding(bottom = 16.dp)
             )
+            Text(
+                text = "PERATURAN ASRAMA" ,
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp,
+                color = Color.White,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp)
+            )
 
             Text(
-                text = "Festra dapat menyediakan layanan berupa platform atau website yang memudahkan para penghuni asrama untuk mengakses informasi seputar asrama, termasuk mengelola fasilitas asrama dan berkomunikasi dengan pengelola asrama.\n" +
-                        "\n" +
-                        "Platform yang disediakan oleh Festra dapat berisi informasi terkait jadwal kegiatan asrama, informasi terkait fasilitas asrama, serta informasi penting lainnya seperti pengumuman atau aturan-aturan yang berlaku di dalam asrama. Dengan platform ini, para penghuni asrama dapat dengan mudah mengakses informasi tersebut kapan saja dan di mana saja tanpa perlu bertemu langsung dengan pengelola asrama.\n" +
-                        "\n" +
-                        "Selain itu, platform yang disediakan oleh Festra juga dapat dilengkapi dengan fitur-fitur lain yang dapat memudahkan para penghuni asrama dalam mengelola kebutuhan mereka di dalam asrama. Misalnya, fitur reservasi atau pemesanan fasilitas asrama seperti ruangan rapat, lapangan olahraga, atau fasilitas lainnya yang dapat digunakan oleh para penghuni asrama. Dengan adanya fitur tersebut, penghuni asrama dapat dengan mudah mengelola dan menggunakan fasilitas asrama tanpa perlu menghubungi pengelola asrama secara langsung.\n" +
-                        "\n" +
-                        "Selain itu, platform yang disediakan oleh Festra juga dapat dilengkapi dengan fitur komunikasi antara para penghuni asrama dan pengelola asrama. Fitur ini memungkinkan para penghuni asrama untuk mengajukan pertanyaan, keluhan, atau permintaan bantuan kepada pengelola asrama secara online. Hal ini dapat memudahkan penghuni asrama dalam berkomunikasi dengan pengelola asrama, terutama jika mereka tidak bisa bertemu langsung atau ketika pengelola asrama sibuk.\n" +
-                        "\n" +
-                        "Dengan menyediakan platform atau website yang memudahkan para penghuni asrama dalam mengakses informasi dan mengelola fasilitas asrama, Festra dapat membantu penghuni asrama untuk lebih efektif dan efisien dalam mengelola kebutuhan mereka di dalam asrama. Sehingga, Festra memiliki potensi untuk menjadi salah satu penyedia layanan asrama yang terpercaya dan terdepan.",
+                text = """
+        1. Saling menghormati dan menjaga suasana untuk mendukung kegiatan belajar.
+        
+        2. Menjaga nama baik pribadi, almamater, dan kerukunan antar penghuni Asrama.
+        
+        3. Penghuni Asrama diizinkan menempati setelah check-in asrama yang telah ditetapkan.
+        
+        4. Penghuni asrama wajib meninggalkan asrama pada akhir masa huniannya sesuai dengan tanggal yang telah ditetapkan.
+        
+        5. Penghuni dilarang membuat keributan atau gangguan (membunyikan radio, tape, alat musik dengan keras atau alat sejenis lainnya yang dapat mengganggu ketenteraman penghuni lainnya).
+        
+        6. Penghuni dilarang menjemur pakaian di depan kamar, di balkon, dan di tempat yang tidak diperuntukan untuk itu.
+        
+        7. Penghuni dilarang memindahkan atau mengeluarkan setiap fasilitas kamar milik asrama.
+        
+        8. Penghuni dilarang menempelkan dan mencoret-coret permukaan pintu masuk, dinding atau fasilitas kamar milik asrama.
+        
+        9. Penghuni diwajibkan mengunci kamar bila ingin meninggalkan kamar untuk menghindari masalah yang tidak diinginkan. Pengelola Asrama tidak bertanggung jawab terhadap kehilangan barang-barang milik penghuni asrama.
+        
+        10. Dilarang menyimpan, mengedarkan dan atau memanfaatkan barang cetakan, audio, visual yang bersifat pornografi, minuman keras, narkotika obat-obatan terlarang, senjata tajam dan senjata api, serta melakukan pencurian.
+        
+        11. Dilarang melakukan tindakan/kegiatan yang bersifat melanggar aturan Universitas Telkom atau hukum yang berlaku di Indonesia seperti berjudi, asusila, dan tindakan lainnya.
+        
+        12. Dilarang melakukan perbuatan/perlakuan tidak senonoh atau perbuatan yang melanggar kesusilaan, norma agama, diskriminasi, dan pelecehan seksual.
+        
+        13. Dilarang menyimpan/mengedarkan/menggunakan barang yang bersifat asusila, pornografi maupun pornoaksi dalam bentuk apapun dengan media apapun.
+        
+        14. Dilarang menyimpan atau menggunakan senjata api, senjata tajam, bahan peledak (bahan-bahan laboratorium yang berpotensi sebagai bahan peledak) atau benda-benda berbahaya lainnya.
+        
+        15. Dilarang membawa hewan peliharaan di lingkungan asrama.
+        
+        16. Dilarang merokok di dalam dan luar kawasan asrama.
+        
+        17. Dilarang memakai pakaian yang tidak sopan atau tidak sesuai dengan norma kesopanan yang berlaku di lingkungan asrama.
+        
+        18. Dilarang menyimpan barang di atas tempat tidur kosong.
+        
+        19. Dilarang meletakkan rak sepatu di lorong depan kamar.
+        """.trimIndent(),
                 textAlign = TextAlign.Justify,
                 fontSize = 14.sp,
                 color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.fillMaxWidth()
             )
+
         }
     }
 }
