@@ -14,10 +14,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Apartment
+import androidx.compose.material.icons.filled.Book
+import androidx.compose.material.icons.filled.PermIdentity
+import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -172,19 +178,23 @@ fun PerizinanContent(
         OutlinedTextField(
             value = nim,
             onValueChange = {},
+            leadingIcon = { Icon(imageVector = Icons.Filled.PermIdentity, contentDescription = "nim") },
             label = { Text("NIM") },
             readOnly = true,
             enabled = false,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
+
         Spacer(modifier = Modifier.height(8.dp))
+
         OutlinedTextField(
             value = noGedungKamar,
             onValueChange = {},
             label = { Text("Nomor Gedung & Kamar") },
             readOnly = true,
             enabled = false,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            leadingIcon = { Icon(imageVector = Icons.Filled.Apartment, contentDescription = "Gedung") },
         )
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -205,10 +215,12 @@ fun PerizinanContent(
             onValueChange = {},
             label = { Text("Tanggal dan Waktu") },
             readOnly = true,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+                    leadingIcon = { Icon(imageVector = Icons.Filled.Timer, contentDescription = "Waktu") }
         )
 
         Spacer(modifier = Modifier.height(8.dp))
+
 
         Button(
             onClick = {
@@ -241,7 +253,8 @@ fun PerizinanContent(
                 imeAction = ImeAction.Next
             ),
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(16.dp),
+            leadingIcon = { Icon(imageVector = Icons.Filled.Book, contentDescription = "Alasan") }
         )
         Spacer(modifier = Modifier.height(16.dp))
 

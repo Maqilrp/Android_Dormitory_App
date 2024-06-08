@@ -116,12 +116,6 @@ fun ScreenContent(modifier: Modifier, navController: NavHostController) {
     var passwordError by rememberSaveable { mutableStateOf(false) }
     var passwordVisible by remember { mutableStateOf(false) }
 
-    // foto
-    var foto by rememberSaveable { mutableStateOf("") }
-    var fotoError by rememberSaveable { mutableStateOf(false) }
-    var selectedImageUri by rememberSaveable {
-        mutableStateOf<Uri?>(null)
-    }
 
     var nim by rememberSaveable { mutableStateOf("") }
     var nimError by rememberSaveable { mutableStateOf(false) }
@@ -153,6 +147,12 @@ fun ScreenContent(modifier: Modifier, navController: NavHostController) {
         Toast.makeText(context, "Registration timed out", Toast.LENGTH_SHORT).show()
     }
 
+    // foto
+    var foto by rememberSaveable { mutableStateOf("") }
+    var fotoError by rememberSaveable { mutableStateOf(false) }
+    var selectedImageUri by rememberSaveable {
+        mutableStateOf<Uri?>(null)
+    }
     // photo picker
     val pickMedia =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->

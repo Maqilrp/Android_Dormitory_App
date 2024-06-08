@@ -8,10 +8,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddCard
+import androidx.compose.material.icons.filled.Apartment
+import androidx.compose.material.icons.filled.AttachMoney
+import androidx.compose.material.icons.filled.CreditCard
+import androidx.compose.material.icons.filled.PermIdentity
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -101,30 +108,35 @@ fun ListrikItem(modifier: Modifier = Modifier, navController: NavController) {
         OutlinedTextField(
             value = namaLengkap,
             onValueChange = { namaLengkap = it },
+            leadingIcon = { Icon(imageVector = Icons.Filled.PermIdentity, contentDescription = "nama") },
             label = { Text("Nama Lengkap") }
         )
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
             value = nim,
             onValueChange = { nim = it },
+            leadingIcon = { Icon(imageVector = Icons.Filled.AddCard, contentDescription = "Nim") },
             label = { Text("NIM") }
         )
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
             value = nomorGedungKamar,
             onValueChange = { nomorGedungKamar = it },
+            leadingIcon = { Icon(imageVector = Icons.Filled.Apartment, contentDescription = "Nim") },
             label = { Text("Nomor Gedung & Kamar") }
         )
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
             value = nominalPembayaran,
             onValueChange = { nominalPembayaran = it },
+            leadingIcon = { Icon(imageVector = Icons.Filled.AttachMoney, contentDescription = "Nominal") },
             label = { Text("Nominal Pembayaran") }
         )
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
             value = jenisPembayaran,
             onValueChange = { jenisPembayaran = it },
+            leadingIcon = { Icon(imageVector = Icons.Filled.CreditCard, contentDescription = "Jenis") },
             label = { Text("Jenis Pembayaran") }
         )
         Spacer(modifier = Modifier.height(16.dp))
