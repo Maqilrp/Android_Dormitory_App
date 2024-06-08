@@ -8,10 +8,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddCard
+import androidx.compose.material.icons.filled.Apartment
+import androidx.compose.material.icons.filled.CameraAlt
+import androidx.compose.material.icons.filled.PermIdentity
+import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -100,30 +107,35 @@ fun PaketItem(modifier: Modifier = Modifier, navController: NavController) {
         OutlinedTextField(
             value = namaLengkap,
             onValueChange = { namaLengkap = it },
+            leadingIcon = { Icon(imageVector = Icons.Filled.PermIdentity, contentDescription = "nama") },
             label = { Text("Nama Lengkap") }
         )
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
             value = nim,
             onValueChange = { nim = it },
+            leadingIcon = { Icon(imageVector = Icons.Filled.AddCard, contentDescription = "Nim") },
             label = { Text("NIM") }
         )
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
             value = nomorGedungKamar,
             onValueChange = { nomorGedungKamar = it },
+            leadingIcon = { Icon(imageVector = Icons.Filled.Apartment, contentDescription = "nim") },
             label = { Text("Nomor Gedung & Kamar") }
         )
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
             value = buktiGambar,
             onValueChange = { buktiGambar = it },
+            leadingIcon = { Icon(imageVector = Icons.Filled.CameraAlt, contentDescription = "nim") },
             label = { Text("Bukti Gambar") }
         )
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
             value = nomorTelepon,
             onValueChange = { nomorTelepon = it },
+            leadingIcon = { Icon(imageVector = Icons.Filled.Phone, contentDescription = "nim") },
             label = { Text("Nomor Telepon") }
         )
         Spacer(modifier = Modifier.height(16.dp))

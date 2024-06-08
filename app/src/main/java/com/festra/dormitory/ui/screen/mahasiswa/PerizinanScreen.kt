@@ -8,10 +8,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Apartment
+import androidx.compose.material.icons.filled.Book
+import androidx.compose.material.icons.filled.PermIdentity
+import androidx.compose.material.icons.filled.Timer
+import androidx.compose.material.icons.filled.TypeSpecimen
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -99,30 +106,36 @@ fun PerizinanContent(modifier: Modifier = Modifier, navController: NavController
         OutlinedTextField(
             value = nim,
             onValueChange = { nim = it },
+            leadingIcon = { Icon(imageVector = Icons.Filled.PermIdentity, contentDescription = "nim") },
             label = { Text("NIM") }
         )
         Spacer(modifier = Modifier.height(8.dp))
+
         OutlinedTextField(
             value = nomorGedungKamar,
             onValueChange = { nomorGedungKamar = it },
+            leadingIcon = { Icon(imageVector = Icons.Filled.Apartment, contentDescription = "Gedung") },
             label = { Text("Nomor Gedung & Kamar") }
         )
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
             value = jenisPerizinan,
             onValueChange = { jenisPerizinan = it },
+            leadingIcon = { Icon(imageVector = Icons.Filled.TypeSpecimen, contentDescription = "Jenis") },
             label = { Text("Jenis Perizinan") }
         )
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
             value = tanggalWaktu,
             onValueChange = { tanggalWaktu = it },
+            leadingIcon = { Icon(imageVector = Icons.Filled.Timer, contentDescription = "Waktu") },
             label = { Text("Tanggal dan Waktu") }
         )
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
             value = alasan,
             onValueChange = { alasan = it },
+            leadingIcon = { Icon(imageVector = Icons.Filled.Book, contentDescription = "Alasan") },
             label = { Text("Alasan") }
         )
         Spacer(modifier = Modifier.height(16.dp))
