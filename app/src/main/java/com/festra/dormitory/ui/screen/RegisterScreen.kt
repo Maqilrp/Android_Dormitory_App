@@ -1,14 +1,16 @@
-@file:Suppress("LABEL_NAME_CLASH")
-
 package com.festra.dormitory.ui.screen
 
+import android.net.Uri
+import android.util.Log
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -54,18 +56,20 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.rememberAsyncImagePainter
 import com.festra.dormitory.R
 import com.festra.dormitory.navigation.Screen
 import com.festra.dormitory.ui.component.NoGedungKamarDropdown
 import com.festra.dormitory.ui.theme.DormitoryAppTheme
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeout
+import java.util.UUID
 
 @Composable
 fun RegisterScreen(navController: NavHostController) {
@@ -112,8 +116,13 @@ fun ScreenContent(modifier: Modifier, navController: NavHostController) {
     var passwordError by rememberSaveable { mutableStateOf(false) }
     var passwordVisible by remember { mutableStateOf(false) }
 
+    // foto
     var foto by rememberSaveable { mutableStateOf("") }
     var fotoError by rememberSaveable { mutableStateOf(false) }
+    var selectedImageUri by rememberSaveable {
+        mutableStateOf<Uri?>(null)
+    }
+
     var nim by rememberSaveable { mutableStateOf("") }
     var nimError by rememberSaveable { mutableStateOf(false) }
     var noTelephone by rememberSaveable { mutableStateOf("") }
@@ -121,14 +130,10 @@ fun ScreenContent(modifier: Modifier, navController: NavHostController) {
     var noGedungKamar by rememberSaveable { mutableStateOf("") }
     var noGedungKamarError by rememberSaveable { mutableStateOf(false) }
 
-    // role
-    var role by rememberSaveable {
-        mutableStateOf("")
-    }
-
     // firebase initialize
     val context = LocalContext.current
     val firestore = FirebaseFirestore.getInstance()
+    val storage = FirebaseStorage.getInstance()
 
     // Loading dialog state
     var showDialog by rememberSaveable { mutableStateOf(false) }
@@ -147,6 +152,18 @@ fun ScreenContent(modifier: Modifier, navController: NavHostController) {
         registrationTimeout = true
         Toast.makeText(context, "Registration timed out", Toast.LENGTH_SHORT).show()
     }
+
+    // photo picker
+    val pickMedia =
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
+            if (uri != null) {
+                selectedImageUri = uri
+                foto = uri.lastPathSegment ?: ""
+                Log.d("PhotoPicker", "Selected URI: $uri")
+            } else {
+                Log.d("PhotoPicker", "No Media Selected")
+            }
+        }
 
     // permission storage
 //    val storagePermissionState = rememberPermissionState(Manifest.permission.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION)
@@ -184,7 +201,12 @@ fun ScreenContent(modifier: Modifier, navController: NavHostController) {
             label = { Text(text = stringResource(R.string.nama_lengkap)) },
             isError = namaLengkapError,
             trailingIcon = { IconPicker(namaLengkapError) },
-            supportingText = { ErrorHint(errorType = ErrorType.InvalidName, isVisible = namaLengkapError) },
+            supportingText = {
+                ErrorHint(
+                    errorType = ErrorType.InvalidName,
+                    isVisible = namaLengkapError
+                )
+            },
             singleLine = true,
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next
@@ -199,7 +221,12 @@ fun ScreenContent(modifier: Modifier, navController: NavHostController) {
             label = { Text(text = stringResource(R.string.email)) },
             isError = emailError,
             trailingIcon = { IconPicker(emailError) },
-            supportingText = { ErrorHint(errorType = ErrorType.InvalidEmail, isVisible = emailError) },
+            supportingText = {
+                ErrorHint(
+                    errorType = ErrorType.InvalidEmail,
+                    isVisible = emailError
+                )
+            },
             singleLine = true,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Email,
@@ -215,15 +242,20 @@ fun ScreenContent(modifier: Modifier, navController: NavHostController) {
             label = { Text(text = stringResource(R.string.password)) },
             isError = passwordError,
             trailingIcon = {
-                           IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                               Icon(
-                                   imageVector = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
-                                   contentDescription = if (passwordVisible) "Hide Password" else "Show Password"
-                               )
-                           }
+                IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                    Icon(
+                        imageVector = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                        contentDescription = if (passwordVisible) "Hide Password" else "Show Password"
+                    )
+                }
             },
             visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-            supportingText = { ErrorHint(errorType = ErrorType.InvalidPassword, isVisible = passwordError) },
+            supportingText = {
+                ErrorHint(
+                    errorType = ErrorType.InvalidPassword,
+                    isVisible = passwordError
+                )
+            },
             singleLine = true,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Password,
@@ -232,67 +264,23 @@ fun ScreenContent(modifier: Modifier, navController: NavHostController) {
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp)
         )
+
         // foto textField
-//        Column {
-//            AsyncImage(
-//                model = selectedImageUri,
-//                contentDescription = null,
-//                modifier = Modifier.fillMaxWidth(),
-//                contentScale = ContentScale.Crop
-//            )
-//
-//            Button(
-//                onClick = {
-//                    singlePhotoPickerLauncher.launch(
-//                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-//                    )
-//                }
-//            ) {
-//                Text(text = "Pick photo")
-//            }
-//        }
-//        OutlinedTextField(
-//            value = foto,
-//            onValueChange = { foto = it },
-//            label = { Text(text = stringResource(R.string.foto)) },
-//            isError = fotoError,
-//            trailingIcon = { IconPicker(fotoError) },
-//            supportingText = { ErrorHint(errorType = ErrorType.InvalidFoto, isVisible = fotoError) },
-//            singleLine = true,
-//            keyboardOptions = KeyboardOptions(
-//                imeAction = ImeAction.Next
-//            ),
-//            modifier = Modifier.fillMaxWidth(),
-//            shape = RoundedCornerShape(16.dp)
-//        )
-//
-//        // Request permission when the foto textField is clicked
-//        Column(
-//            modifier = Modifier
-//                .padding(8.dp)
-//                .clickable {
-//                    if (storagePermissionState.hasPermission) {
-//                        launcher.launch(Manifest.permission.
-//                    } else {
-//                        storagePermissionState.launchPermissionRequest()
-//                    }
-//                }
-//        ) {
-//            OutlinedTextField(
-//                value = foto,
-//                onValueChange = { foto = it },
-//                label = { Text(text = stringResource(R.string.foto)) },
-//                isError = fotoError,
-//                trailingIcon = { IconPicker(fotoError) },
-//                supportingText = { ErrorHint(errorType = ErrorType.InvalidFoto, isVisible = fotoError) },
-//                singleLine = true,
-//                keyboardOptions = KeyboardOptions(
-//                    imeAction = ImeAction.Next
-//                ),
-//                modifier = Modifier.fillMaxWidth(),
-//                shape = RoundedCornerShape(16.dp)
-//            )
-//        }
+
+        Button(onClick = {
+            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            foto = ""
+        }) {
+            Text(text = "Select Image")
+        }
+
+        if (selectedImageUri != null) {
+            Image(
+                painter = rememberAsyncImagePainter(selectedImageUri),
+                contentDescription = null,
+                modifier = Modifier.size(100.dp)
+            )
+        }
 
         OutlinedTextField(
             value = foto,
@@ -300,7 +288,12 @@ fun ScreenContent(modifier: Modifier, navController: NavHostController) {
             label = { Text(text = stringResource(R.string.foto)) },
             isError = fotoError,
             trailingIcon = { IconPicker(fotoError) },
-            supportingText = { ErrorHint(errorType = ErrorType.InvalidFoto, isVisible = fotoError) },
+            supportingText = {
+                ErrorHint(
+                    errorType = ErrorType.InvalidFoto,
+                    isVisible = fotoError
+                )
+            },
             singleLine = true,
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next
@@ -331,7 +324,12 @@ fun ScreenContent(modifier: Modifier, navController: NavHostController) {
             label = { Text(text = stringResource(R.string.nomor_telepon)) },
             isError = noTeleponError,
             trailingIcon = { IconPicker(noTeleponError) },
-            supportingText = { ErrorHint(errorType = ErrorType.InvalidNoTelephone, isVisible = noTeleponError) },
+            supportingText = {
+                ErrorHint(
+                    errorType = ErrorType.InvalidNoTelephone,
+                    isVisible = noTeleponError
+                )
+            },
             singleLine = true,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Phone,
@@ -341,131 +339,154 @@ fun ScreenContent(modifier: Modifier, navController: NavHostController) {
             shape = RoundedCornerShape(16.dp)
         )
         // noGedungKamar textField
-        NoGedungKamarDropdown(selectedText = noGedungKamar, onSelectedTextChange = {noGedungKamar = it})
-//        OutlinedTextField(
-//            value = noGedungKamar,
-//            onValueChange = { noGedungKamar = it },
-//            label = { Text(text = stringResource(R.string.nomor_gedung_dan_kamar)) },
-//            isError = noGedungKamarError,
-//            trailingIcon = { IconPicker(noGedungKamarError) },
-//            supportingText = { ErrorHint(errorType = ErrorType.InvalidNoGedungKamar, isVisible = noGedungKamarError) },
-//            singleLine = true,
-//            keyboardOptions = KeyboardOptions(
-//                imeAction = ImeAction.Done
-//            ),
-//            modifier = Modifier.fillMaxWidth(),
-//            shape = RoundedCornerShape(16.dp)
-//        )
+        NoGedungKamarDropdown(
+            selectedText = noGedungKamar,
+            onSelectedTextChange = { noGedungKamar = it })
+
         // confirmation button
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
             modifier = Modifier.fillMaxWidth()
         ) {
-            // button submit
             Button(
                 onClick = {
-                    // input validation
                     namaLengkapError = (namaLengkap == "")
-                    // email must use @gmail.com
                     emailError = !email.endsWith("@gmail.com")
                     passwordError = password.length <= 7
                     fotoError = (foto == "")
                     nimError = nim.length != 10
                     noTeleponError = noTelephone.length <= 10
                     noGedungKamarError = (noGedungKamar == "")
+
+
                     if (namaLengkapError || emailError || passwordError || fotoError || nimError || noTeleponError || noGedungKamarError) return@Button
 
-                    // show dialog statement true
                     showDialog = true
                     isCancelled = false
 
-                    // firebase register logic
                     registrationJob = scope.launch(timeoutHandler) {
                         try {
                             withTimeout(timeoutMillis) {
-                                Firebase.auth.createUserWithEmailAndPassword(email, password)
+                                // Check if the email already exists in Firebase Authentication
+                                FirebaseAuth.getInstance().fetchSignInMethodsForEmail(email)
                                     .addOnCompleteListener { task ->
-                                        if (isCancelled) {
-                                            Toast.makeText(context, "Registration cancelled", Toast.LENGTH_SHORT).show()
-                                            return@addOnCompleteListener
-                                        }
-
                                         if (task.isSuccessful) {
-                                            val user = Firebase.auth.currentUser
-                                            val userId = user?.uid
-                                            val userData = hashMapOf(
-                                                "name" to namaLengkap,
-                                                "email" to email,
-                                                "password" to password,
-                                                "foto" to foto,
-                                                "nim" to nim,
-                                                "noTelephone" to noTelephone,
-                                                "noGedungKamar" to noGedungKamar,
-                                                "role" to role
-                                            )
-                                            userId?.let {
-                                                firestore.collection("users").document(userId).set(userData)
-                                                    .addOnSuccessListener {
-                                                        if (isCancelled) {
-                                                            Toast.makeText(context, "Registration cancelled", Toast.LENGTH_SHORT).show()
-                                                            return@addOnSuccessListener
+                                            val signInMethods = task.result?.signInMethods
+                                            if (!signInMethods.isNullOrEmpty()) {
+                                                // Email already exists, show an error message to the user
+                                                Toast.makeText(
+                                                    context,
+                                                    "Email already exists. Please use a different email.",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+                                            } else {
+                                                // Email doesn't exist, proceed with user registration
+                                                val userId = UUID.randomUUID().toString()
+                                                if (selectedImageUri != null) {
+                                                    val storageRef =
+                                                        storage.reference.child("images/$userId.jpg")
+                                                    val uploadTask =
+                                                        storageRef.putFile(selectedImageUri!!)
+
+                                                    uploadTask.addOnSuccessListener {
+                                                        storageRef.downloadUrl.addOnSuccessListener { uri ->
+                                                            val imageUrl = uri.toString()
+                                                            val userData = hashMapOf(
+                                                                "name" to namaLengkap,
+                                                                "email" to email,
+                                                                "password" to password,
+                                                                "foto" to imageUrl,
+                                                                "nim" to nim,
+                                                                "noTelephone" to noTelephone,
+                                                                "noGedungKamar" to noGedungKamar,
+                                                                "role" to "user"
+                                                            )
+                                                            // Create Firebase Authentication user with email and password
+                                                            FirebaseAuth.getInstance()
+                                                                .createUserWithEmailAndPassword(
+                                                                    email,
+                                                                    password
+                                                                )
+                                                                .addOnSuccessListener { authResult ->
+                                                                    // Registration successful, now save user data in Firestore
+                                                                    val user = authResult.user
+                                                                    user?.let { firebaseUser ->
+                                                                        firestore.collection("users")
+                                                                            .document(firebaseUser.uid)
+                                                                            .set(userData)
+                                                                            .addOnSuccessListener {
+                                                                                showDialog = false
+                                                                                navController.navigate(
+                                                                                   Screen.Login.route
+                                                                                )
+                                                                                Toast.makeText(
+                                                                                    context,
+                                                                                    "Registration successful",
+                                                                                    Toast.LENGTH_SHORT
+                                                                                ).show()
+                                                                            }
+                                                                            .addOnFailureListener { exception ->
+                                                                                showDialog = false
+                                                                                Toast.makeText(
+                                                                                    context,
+                                                                                    "Failed to save user data: ${exception.message}",
+                                                                                    Toast.LENGTH_SHORT
+                                                                                ).show()
+                                                                            }
+                                                                    }
+                                                                }
+                                                                .addOnFailureListener { exception ->
+                                                                    showDialog = false
+                                                                    Toast.makeText(
+                                                                        context,
+                                                                        "Registration failed: ${exception.message}",
+                                                                        Toast.LENGTH_SHORT
+                                                                    ).show()
+                                                                }
                                                         }
-
-                                                        // Verify the document
-                                                        firestore.collection("users").document(userId).get()
-                                                            .addOnSuccessListener { document ->
-                                                                if (isCancelled) {
-                                                                    Toast.makeText(context, "Registration cancelled", Toast.LENGTH_SHORT).show()
-                                                                    return@addOnSuccessListener
-                                                                }
-
-                                                                if (document.exists()) {
-                                                                    Toast.makeText(context, "User registered successfully", Toast.LENGTH_SHORT).show()
-                                                                    // show dialog statement false
-                                                                    showDialog = false
-                                                                    navController.navigate(Screen.Login.route)
-                                                                } else {
-                                                                    Toast.makeText(context, "Fail", Toast.LENGTH_SHORT).show()
-                                                                    // show dialog statement false
-                                                                    showDialog = false
-                                                                }
-                                                            }
+                                                    }.addOnFailureListener {
+                                                        showDialog = false
+                                                        Toast.makeText(
+                                                            context,
+                                                            "Image upload failed",
+                                                            Toast.LENGTH_SHORT
+                                                        ).show()
                                                     }
+                                                }
                                             }
+                                        } else {
+                                            // Error fetching sign-in methods
+                                            Toast.makeText(
+                                                context,
+                                                "Failed to check email existence: ${task.exception?.message}",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
                                         }
                                     }
+
+
                             }
                         } catch (e: TimeoutCancellationException) {
                             showDialog = false
                             registrationTimeout = true
-                            Toast.makeText(context, "Registration timed out", Toast.LENGTH_SHORT).show()
-                        } catch (e: Exception) {
-                            showDialog = false
-                            Toast.makeText(context, "Registration error: ${e.message}", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "Registration timed out", Toast.LENGTH_SHORT)
+                                .show()
                         }
                     }
-                },
-                modifier = Modifier.padding(top = 8.dp),
-                contentPadding = PaddingValues(horizontal = 32.dp, vertical = 16.dp)
+                }
             ) {
-                Text(text = stringResource(R.string.submit))
+                Text(text = "Register")
             }
 
-            // button cancel
-            Button(
-                onClick = {
-                    showDialog = false
-                    registrationTimeout = false
-                    isCancelled = true
-                    navController.popBackStack()
-                },
-                modifier = Modifier.padding(top = 8.dp),
-                contentPadding = PaddingValues(horizontal = 32.dp, vertical = 16.dp)
-            ) {
-                Text(text = stringResource(R.string.cancel))
+            Button(onClick = {
+                navController.popBackStack()
+                isCancelled = true
+            }) {
+                Text(text = "Cancel")
             }
         }
     }
+
 
     // Show the loading dialog
     if (showDialog) {
@@ -528,7 +549,6 @@ fun ErrorHint(errorType: ErrorType, isVisible: Boolean) {
         Text(text = errorMessage)
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
