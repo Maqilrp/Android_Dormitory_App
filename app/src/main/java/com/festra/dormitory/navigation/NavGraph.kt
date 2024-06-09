@@ -36,7 +36,7 @@ fun SetupNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Home.route
+        startDestination = Screen.Admin_mahasiswa.route
     ) {
         composable(
             route = Screen.Login.route
