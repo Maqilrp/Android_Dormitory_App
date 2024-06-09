@@ -244,7 +244,7 @@ fun HomeContent(modifier: Modifier, navController: NavController) {
                         .clip(shape = RoundedCornerShape(16.dp)),
                     painter = painterResource(id = R.drawable.gambar_asrama),
                     contentDescription = "Asrama",
-                    contentScale = ContentScale.Crop,
+//                    contentScale = ContentScale.Crop,
                 )
                 Column(
                     modifier = Modifier.padding(10.dp)
@@ -287,7 +287,6 @@ fun HomeContent(modifier: Modifier, navController: NavController) {
 //                Fitur Perizinan
                 ElevatedCard(
                     elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-                    onClick = { navController.navigate(Screen.Perizinan.route) },
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
                     modifier = Modifier
                         .size(width = 150.dp, height = 150.dp)
@@ -319,7 +318,7 @@ fun HomeContent(modifier: Modifier, navController: NavController) {
                             )
                             Spacer(modifier = Modifier.height(16.dp))
                             Button(
-                                onClick = { /* Handle GO PERIZINAN */ },
+                                onClick = { navController.navigate(Screen.Perizinan.route) },
                                 shape = RoundedCornerShape(50),
                                 colors = ButtonDefaults.buttonColors()
                             ) {
@@ -331,7 +330,6 @@ fun HomeContent(modifier: Modifier, navController: NavController) {
 //                Fitur Laundry
                 ElevatedCard(
                     elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-                    onClick = { navController.navigate(Screen.Laundry.route) },
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
                     modifier = Modifier
                         .size(width = 150.dp, height = 150.dp)
@@ -363,7 +361,7 @@ fun HomeContent(modifier: Modifier, navController: NavController) {
                             )
                             Spacer(modifier = Modifier.height(16.dp))
                             Button(
-                                onClick = { /*TODO*/ },
+                                onClick = { navController.navigate(Screen.Laundry.route) },
                                 shape = RoundedCornerShape(50),
                                 colors = ButtonDefaults.buttonColors()
                             ) {
@@ -380,7 +378,6 @@ fun HomeContent(modifier: Modifier, navController: NavController) {
 //                Fitur Air Minum
                 ElevatedCard(
                     elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-                    onClick = { navController.navigate(Screen.Airminum.route) },
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
                     modifier = Modifier
                         .size(width = 150.dp, height = 150.dp)
@@ -412,7 +409,7 @@ fun HomeContent(modifier: Modifier, navController: NavController) {
                             )
                             Spacer(modifier = Modifier.height(16.dp))
                             Button(
-                                onClick = { /*TODO*/ },
+                                onClick = { navController.navigate(Screen.Airminum.route) },
                                 shape = RoundedCornerShape(50),
                                 colors = ButtonDefaults.buttonColors()
                             ) {
@@ -426,7 +423,6 @@ fun HomeContent(modifier: Modifier, navController: NavController) {
                     elevation = CardDefaults.cardElevation(
                         defaultElevation = 6.dp
                     ),
-                    onClick = { navController.navigate(Screen.Listrik.route) },
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.surfaceVariant,
                     ),
@@ -460,7 +456,7 @@ fun HomeContent(modifier: Modifier, navController: NavController) {
                             )
                             Spacer(modifier = Modifier.height(16.dp))
                             Button(
-                                onClick = { /*TODO*/ },
+                                onClick = { navController.navigate(Screen.Listrik.route) },
                                 shape = RoundedCornerShape(50),
                                 colors = ButtonDefaults.buttonColors()
                             ) {
@@ -479,7 +475,6 @@ fun HomeContent(modifier: Modifier, navController: NavController) {
                     elevation = CardDefaults.cardElevation(
                         defaultElevation = 6.dp
                     ),
-                    onClick = { navController.navigate(Screen.Paket.route) },
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.surfaceVariant,
                     ),
@@ -513,7 +508,7 @@ fun HomeContent(modifier: Modifier, navController: NavController) {
                             )
                             Spacer(modifier = Modifier.height(16.dp))
                             Button(
-                                onClick = { /*TODO*/ },
+                                onClick = { navController.navigate(Screen.Paket.route) },
                                 shape = RoundedCornerShape(50),
                                 colors = ButtonDefaults.buttonColors()
                             ) {
@@ -527,7 +522,6 @@ fun HomeContent(modifier: Modifier, navController: NavController) {
                     elevation = CardDefaults.cardElevation(
                         defaultElevation = 6.dp
                     ),
-                    onClick = { navController.navigate(Screen.History.route) },
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.surfaceVariant,
                     ),
@@ -561,7 +555,7 @@ fun HomeContent(modifier: Modifier, navController: NavController) {
                             )
                             Spacer(modifier = Modifier.height(16.dp))
                             Button(
-                                onClick = { /*TODO*/ },
+                                onClick = { navController.navigate(Screen.History.route) },
                                 shape = RoundedCornerShape(50),
                                 colors = ButtonDefaults.buttonColors()
                             ) {
