@@ -35,15 +35,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.festra.dormitory.R
 import com.festra.dormitory.ui.component.BottomBarNavigationComponent
+import com.festra.dormitory.ui.screen.UserViewModel
 import com.festra.dormitory.ui.theme.DormitoryAppTheme
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun HistoryScreen(navController: NavController) {
+fun HistoryScreen(navController: NavController, userViewModel: UserViewModel = viewModel()) {
     // data store
 //    val dataStore = SettingsDataStore(LocalContext.current)
 //    val showList by dataStore.layoutFlow.collectAsState(true)
@@ -80,7 +82,7 @@ fun HistoryScreen(navController: NavController) {
             )
         },
         bottomBar = {
-            BottomBarNavigationComponent(navController = navController, selectedIconIndex = 0)
+            BottomBarNavigationComponent(navController = navController, selectedIconIndex = 0, userViewModel = userViewModel)
         }
     ) { paddingValues ->
         HistoryContent(modifier = Modifier.padding(paddingValues), navController)

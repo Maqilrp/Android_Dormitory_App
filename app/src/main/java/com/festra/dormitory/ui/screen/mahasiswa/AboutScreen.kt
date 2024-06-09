@@ -21,15 +21,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.festra.dormitory.R
 import com.festra.dormitory.ui.component.BottomBarNavigationComponent
+import com.festra.dormitory.ui.screen.UserViewModel
 import com.festra.dormitory.ui.theme.DormitoryAppTheme
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun AboutScreen(navController: NavController) {
+fun AboutScreen(navController: NavController, userViewModel: UserViewModel = viewModel()) {
     // data store
 //    val dataStore = SettingsDataStore(LocalContext.current)
 //    val showList by dataStore.layoutFlow.collectAsState(true)
@@ -74,7 +76,7 @@ fun AboutScreen(navController: NavController) {
             )
         },
         bottomBar = {
-            BottomBarNavigationComponent(navController = navController, selectedIconIndex = null )
+            BottomBarNavigationComponent(navController = navController, selectedIconIndex = null, userViewModel = userViewModel )
         }
     ) { paddingValues ->
         AboutContent(modifier = Modifier.padding(paddingValues))

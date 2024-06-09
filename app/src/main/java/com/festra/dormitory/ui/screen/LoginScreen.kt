@@ -18,8 +18,8 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -35,7 +35,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -51,6 +50,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.festra.dormitory.R
@@ -61,7 +61,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Login(navController: NavController) {
+fun Login(navController: NavController, userViewModel: UserViewModel = viewModel()) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -90,8 +90,8 @@ fun Login(navController: NavController) {
                     modifier = Modifier.fillMaxWidth()
                 )
                 Text(
-                    text = "Selamat Datang  Di\n" +
-                            " Dormitory Application",
+                    text = "Selamat Datang Di\n" +
+                            "Dormitory Application",
                     style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
@@ -99,33 +99,24 @@ fun Login(navController: NavController) {
                         .align(Alignment.Center)
                 )
             }
-            LoginContent(Modifier.padding(padding), navController)
+            LoginContent(Modifier.padding(padding), navController, userViewModel)
         }
     }
 }
 
-
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun LoginContent(modifier: Modifier, navController: NavController) {
-    val context = LocalContext.current // Retrieve the context
-    val keyboardController = LocalSoftwareKeyboardController.current
+fun LoginContent(modifier: Modifier, navController: NavController, userViewModel: UserViewModel) {
+    val context = LocalContext.current
+    LocalSoftwareKeyboardController.current
 
-    // State variables for email and password fields
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
 
-    // State variables for displaying error messages
     var emailErrorText by remember { mutableStateOf("") }
     var passwordErrorText by remember { mutableStateOf("") }
 
-    // Loading dialog state
     var showDialog by rememberSaveable { mutableStateOf(false) }
-    // Timeout state
-    var registrationTimeout by rememberSaveable { mutableStateOf(false) }
-    // Cancellation state
-    var isCancelled by rememberSaveable { mutableStateOf(false) }
 
     Column(
         modifier = modifier
@@ -134,7 +125,6 @@ fun LoginContent(modifier: Modifier, navController: NavController) {
     ) {
         Spacer(modifier = Modifier.weight(1f))
 
-        // Title above the login inputs
         Text(
             text = "LOGIN FESTRA",
             style = MaterialTheme.typography.bodyLarge,
@@ -143,10 +133,9 @@ fun LoginContent(modifier: Modifier, navController: NavController) {
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Divider(Modifier.padding(vertical = 1.dp))
+        HorizontalDivider(Modifier.padding(vertical = 1.dp))
         Spacer(modifier = Modifier.height(30.dp))
 
-        // Input field for email
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -159,13 +148,12 @@ fun LoginContent(modifier: Modifier, navController: NavController) {
                 value = email.value,
                 onValueChange = {
                     email.value = it
-                    emailErrorText = "" // Clear error message when input changes
+                    emailErrorText = ""
                 },
                 modifier = Modifier.fillMaxWidth(),
                 label = { Text("Email") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Next)
             )
-            // Display error message if email field is empty
             Text(
                 text = emailErrorText,
                 color = Color.Red,
@@ -176,7 +164,6 @@ fun LoginContent(modifier: Modifier, navController: NavController) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Input field for password
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -189,7 +176,7 @@ fun LoginContent(modifier: Modifier, navController: NavController) {
                 value = password.value,
                 onValueChange = {
                     password.value = it
-                    passwordErrorText = "" // Clear error message when input changes
+                    passwordErrorText = ""
                 },
                 modifier = Modifier.fillMaxWidth(),
                 label = { Text("Password") },
@@ -204,7 +191,6 @@ fun LoginContent(modifier: Modifier, navController: NavController) {
                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done, autoCorrect = false),
             )
-            // Display error message if password field is empty
             Text(
                 text = passwordErrorText,
                 color = Color.Red,
@@ -215,10 +201,8 @@ fun LoginContent(modifier: Modifier, navController: NavController) {
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // Button to submit login
         Button(
             onClick = {
-                // Validate input fields
                 if (email.value.isEmpty()) {
                     emailErrorText = "Email cannot be empty"
                     return@Button
@@ -228,21 +212,20 @@ fun LoginContent(modifier: Modifier, navController: NavController) {
                     return@Button
                 }
 
-                // show dialog statement true
                 showDialog = true
-                isCancelled = false
 
-                // Firebase authentication logic
                 FirebaseAuth.getInstance().signInWithEmailAndPassword(email.value, password.value)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             val user = task.result?.user
                             user?.let {
+                                val uid = it.uid
+                                userViewModel.setUserUid(uid = uid)
                                 val db = FirebaseFirestore.getInstance()
                                 db.collection("users").document(it.uid).get()
                                     .addOnSuccessListener { document ->
                                         if (document != null && document.exists()) {
-                                            val role = document.getString("role") ?: false
+                                            val role = document.getString("role") ?: "mahasiswa"
                                             if (role == "admin") {
                                                 navController.navigate(Screen.HomeAdmin.route)
                                                 Toast.makeText(context, "Login Admin Successful.", Toast.LENGTH_SHORT).show()
@@ -254,7 +237,7 @@ fun LoginContent(modifier: Modifier, navController: NavController) {
                                             Toast.makeText(context, "User not found.", Toast.LENGTH_SHORT).show()
                                         }
                                     }
-                                    .addOnFailureListener { exception ->
+                                    .addOnFailureListener { _ ->
                                         Toast.makeText(context, "Failed to fetch user data.", Toast.LENGTH_SHORT).show()
                                     }
                                     .addOnCompleteListener {
@@ -272,7 +255,6 @@ fun LoginContent(modifier: Modifier, navController: NavController) {
             Text("SIGN IN")
         }
 
-        // Button to navigate to the registration screen
         Button(
             onClick = { navController.navigate(Screen.Register.route) },
             modifier = Modifier.fillMaxWidth()
@@ -280,13 +262,11 @@ fun LoginContent(modifier: Modifier, navController: NavController) {
             Text(text = "Register")
         }
     }
-    // Show the loading dialog
+
     if (showDialog) {
         Dialog(
             onDismissRequest = {
                 showDialog = false
-                registrationTimeout = false
-                isCancelled = true
             },
             DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false)
         ) {

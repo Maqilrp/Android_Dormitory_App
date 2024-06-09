@@ -17,6 +17,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.navigation.NavController
+import com.festra.dormitory.ui.screen.UserViewModel
 import com.festra.dormitory.ui.screen.mahasiswa.BottomNavigationItem
 
 val items = listOf(
@@ -41,7 +42,8 @@ val items = listOf(
 @Composable
 fun BottomBarNavigationComponent(
     navController: NavController,
-    selectedIconIndex: Int?
+    selectedIconIndex: Int?,
+    userViewModel: UserViewModel
 ){
 
     var selectedIconNavigation by rememberSaveable {

@@ -28,15 +28,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.festra.dormitory.navigation.Screen
 import com.festra.dormitory.ui.component.BottomBarNavigationComponent
+import com.festra.dormitory.ui.screen.UserViewModel
 import com.festra.dormitory.ui.theme.DormitoryAppTheme
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun LaundryScreen(navController: NavController) {
+fun LaundryScreen(navController: NavController, userViewModel: UserViewModel = viewModel()) {
     // data store
 //    val dataStore = SettingsDataStore(LocalContext.current)
 //    val showList by dataStore.layoutFlow.collectAsState(true)
@@ -73,7 +75,7 @@ fun LaundryScreen(navController: NavController) {
             )
         },
         bottomBar = {
-            BottomBarNavigationComponent(navController = navController, selectedIconIndex = null)
+            BottomBarNavigationComponent(navController = navController, selectedIconIndex = null, userViewModel = userViewModel)
         }
     ) { paddingValues ->
         LaundryItem(modifier = Modifier.padding(paddingValues), navController)

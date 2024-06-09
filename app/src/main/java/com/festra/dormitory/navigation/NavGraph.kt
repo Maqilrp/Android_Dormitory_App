@@ -1,6 +1,7 @@
 package com.festra.dormitory.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -9,6 +10,7 @@ import com.festra.dormitory.ui.screen.AdminProfile
 import com.festra.dormitory.ui.screen.Login
 import com.festra.dormitory.ui.screen.ProfileScreen
 import com.festra.dormitory.ui.screen.RegisterScreen
+import com.festra.dormitory.ui.screen.UserViewModel
 import com.festra.dormitory.ui.screen.admin.Admin_AirMinum
 import com.festra.dormitory.ui.screen.admin.Admin_Gedung
 import com.festra.dormitory.ui.screen.admin.Admin_Laundry
@@ -39,7 +41,8 @@ fun SetupNavGraph(
         composable(
             route = Screen.Login.route
         ) {
-            Login(navController)
+            val userViewModel: UserViewModel = viewModel()
+            Login(navController,userViewModel)
         }
         composable(
             route = Screen.Register.route
@@ -59,7 +62,8 @@ fun SetupNavGraph(
         composable(
             route = Screen.Profile.route
         ) {
-            ProfileScreen(navController)
+            val userViewModel: UserViewModel = viewModel()
+            ProfileScreen(navController, userViewModel)
         }
         composable(
             route = Screen.About.route

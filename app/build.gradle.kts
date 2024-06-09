@@ -105,6 +105,10 @@ dependencies {
 //    implementation ("com.google.accompanist:accompanist-permissions:0.23.0")
 //    implementation ("com.google.accompanist:accompanist-glide:0.23.0")
 
+    //glide
+    implementation ("com.github.bumptech.glide:glide:4.12.0")
+    implementation ("com.github.skydoves:landscapist-glide:1.5.2")
+
     //coil
     implementation("io.coil-kt:coil-compose:2.6.0")
 

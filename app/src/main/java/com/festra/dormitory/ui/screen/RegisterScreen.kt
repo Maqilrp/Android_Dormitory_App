@@ -266,14 +266,6 @@ fun ScreenContent(modifier: Modifier, navController: NavHostController) {
         )
 
         // foto textField
-
-        Button(onClick = {
-            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-            foto = ""
-        }) {
-            Text(text = "Select Image")
-        }
-
         if (selectedImageUri != null) {
             Image(
                 painter = rememberAsyncImagePainter(selectedImageUri),
@@ -285,6 +277,7 @@ fun ScreenContent(modifier: Modifier, navController: NavHostController) {
         OutlinedTextField(
             value = foto,
             onValueChange = { foto = it },
+            readOnly = true,
             label = { Text(text = stringResource(R.string.foto)) },
             isError = fotoError,
             trailingIcon = { IconPicker(fotoError) },
@@ -301,6 +294,16 @@ fun ScreenContent(modifier: Modifier, navController: NavHostController) {
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp)
         )
+
+        Button(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = {
+            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            foto = ""
+        }) {
+            Text(text = "Pilih Foto")
+        }
+
         // nim textField
         OutlinedTextField(
             value = nim,

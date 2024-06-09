@@ -11,4 +11,7 @@
     <string name="cancel">Cancel</string>
     <string name="input_invalid">Isian tidak boleh kosong</string>
     <string name="gambar_asrama">Asrama Telkom University</string>
+    <string name="batal">Batal</string>
+    <string name="setuju">Setuju</string>
+    <string name="confirm_dialog">Anda Yakin Ingin Mengupdate Data ?</string>
 </resources>

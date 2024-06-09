@@ -29,6 +29,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -40,11 +42,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.festra.dormitory.R
 import com.festra.dormitory.navigation.Screen
 import com.festra.dormitory.ui.component.BottomBarNavigationComponent
+import com.festra.dormitory.ui.screen.UserViewModel
 import com.festra.dormitory.ui.theme.DormitoryAppTheme
 
 
@@ -56,11 +60,11 @@ data class BottomNavigationItem(
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController, userViewModel: UserViewModel = viewModel()) {
     // data store
 //    val dataStore = SettingsDataStore(LocalContext.current)
 //    val showList by dataStore.layoutFlow.collectAsState(true)
-
+    val userUid by userViewModel.userUid.collectAsState()
 
 
     Scaffold(
@@ -101,15 +105,15 @@ fun HomeScreen(navController: NavController) {
             )
         },
         bottomBar = {
-            BottomBarNavigationComponent(navController = navController, selectedIconIndex = 1 )
+            BottomBarNavigationComponent(navController = navController, selectedIconIndex = 1, userViewModel = userViewModel )
         }
     ) { paddingValues ->
-        HomeContent(modifier = Modifier.padding(paddingValues), navController)
+        HomeContent(modifier = Modifier.padding(paddingValues), navController, userViewModel)
     }
 }
 
 @Composable
-fun HomeContent(modifier: Modifier, navController: NavController) {
+fun HomeContent(modifier: Modifier, navController: NavController, userViewModel: UserViewModel) {
     Box(
         modifier = modifier
             .fillMaxSize()
