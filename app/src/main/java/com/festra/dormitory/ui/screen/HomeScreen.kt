@@ -1,9 +1,12 @@
 package com.festra.dormitory.ui.screen
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -48,7 +52,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -104,9 +110,8 @@ fun HomeScreen(navController: NavController) {
             CenterAlignedTopAppBar(
                 title = { Text(text = "Home") },
                 colors = TopAppBarDefaults.mediumTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceBright,
-                    titleContentColor = MaterialTheme.colorScheme.primary
-
+                    containerColor = Color.White,
+                    titleContentColor = Color.Black
                 ),
                 actions = {
 //                    IconButton(onClick = {
@@ -130,8 +135,10 @@ fun HomeScreen(navController: NavController) {
                     Box {
                         IconButton(onClick = { expanded = true }) {
                             Icon(
+                                modifier = Modifier.size(50.dp),
                                 imageVector = Icons.Filled.AccountCircle,
-                                contentDescription = "Opsi"
+                                contentDescription = "Opsi",
+                                tint = Color.Black
                             )
                         }
                         DropdownMenu(
@@ -158,27 +165,43 @@ fun HomeScreen(navController: NavController) {
             )
         },
         bottomBar = {
-            NavigationBar {
-                items.forEachIndexed { index, item ->
-                    NavigationBarItem(
-                        selected = selectedIconIndex == index,
-                        onClick = {
-                            selectedIconIndex = index
-                            navController.navigate(item.title)
-                        },
-                        label = {
-                            Text(text = item.title)
-                        },
-                        alwaysShowLabel = false,
-                        icon = {
-                            Icon(
-                                imageVector = if (index == selectedIconIndex) {
-                                    item.selectedIcon
-                                } else item.unselectedIcon,
-                                contentDescription = item.title
-                            )
-                        }
+            Box(
+                modifier = Modifier
+                    .border(
+                        width = 0.dp,
+                        color = Color.Black,
+                        shape = RectangleShape,
                     )
+                    .padding(top = 3.dp)
+            ) {
+                NavigationBar(
+                    containerColor = Color.White,
+                ) {
+                    items.forEachIndexed { index, item ->
+                        NavigationBarItem(
+                            selected = selectedIconIndex == index,
+                            onClick = {
+                                selectedIconIndex = index
+                                navController.navigate(item.title)
+                            },
+                            label = {
+                                Text(
+                                    text = item.title,
+                                    color = Color.Black
+                                )
+                            },
+                            alwaysShowLabel = false,
+                            icon = {
+                                Icon(
+                                    imageVector = if (index == selectedIconIndex) {
+                                        item.selectedIcon
+                                    } else item.unselectedIcon,
+                                    contentDescription = item.title,
+                                    tint = Color.Black
+                                )
+                            }
+                        )
+                    }
                 }
             }
         }
@@ -190,12 +213,13 @@ fun HomeScreen(navController: NavController) {
 @Composable
 fun HomeContent(modifier: Modifier, navController: NavController) {
     Box(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize()
+            .background(Color.White)
             .verticalScroll(rememberScrollState())
     ) {
         Column(
-//           modifier = modifier
+            modifier = modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // Text Header
@@ -203,19 +227,28 @@ fun HomeContent(modifier: Modifier, navController: NavController) {
                 text = "Mempermudah Hidup Di Asrama",
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold,
-                fontSize = 20.sp,
-                modifier = modifier.padding(1.dp)
+                fontSize = 30.sp,
+                modifier = Modifier.padding(0.dp),
+                color = Color.Black
             )
             // gambar asrama
             Box(
-                modifier = Modifier.padding(horizontal = 16.dp).clip(RoundedCornerShape(16.dp))
+                modifier = Modifier
+                    .padding(horizontal = 16.dp, vertical = 4.dp)
+                    .clip(RoundedCornerShape(16.dp))
+                    .wrapContentHeight()
             ) {
                 Image(
-                    modifier = Modifier.fillMaxWidth().clip(shape = RoundedCornerShape(16.dp)),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(shape = RoundedCornerShape(16.dp)),
                     painter = painterResource(id = R.drawable.gambar_asrama),
                     contentDescription = "Asrama",
+                    contentScale = ContentScale.Crop,
                 )
-                Column {
+                Column(
+                    modifier = Modifier.padding(10.dp)
+                ) {
                     Text(
                         text = "Festra",
                         fontWeight = FontWeight.Bold,
@@ -223,14 +256,13 @@ fun HomeContent(modifier: Modifier, navController: NavController) {
                     )
                     Text(
                         text = "Aplikasi ini hadir untuk memberikan solusi terhadap segala masalah dan persoalan keperluan asrama yang dianytaranya ialah membantu para penghuni asrama untuk berkomunikasi dengan SR (Senior Residence), helpdesk, dan satpam. Serta menawarkan pembelian token listrik, laundry pakaian, pembelian galon, pengambilan paket, dan mengurus surat izin.",
-                        maxLines = 3,
                         textAlign = TextAlign.Justify,
                         color = Color.Black,
                         fontSize = 10.sp,
                     )
                     Row(
-                        modifier = modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceAround
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Button(
                             onClick = { navController.navigate(Screen.About.route) }
@@ -245,10 +277,11 @@ fun HomeContent(modifier: Modifier, navController: NavController) {
             }
             Text(
                 text = "Apa Yang Anda Butuhkan",
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = Color.Black
             )
             Row(
-                modifier = modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize(),
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
 //                Fitur Perizinan
@@ -259,36 +292,39 @@ fun HomeContent(modifier: Modifier, navController: NavController) {
                     modifier = Modifier
                         .size(width = 150.dp, height = 150.dp)
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(16.dp),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
+                    Box {
                         Image(
                             painter = painterResource(id = R.drawable.perizinan),
                             contentDescription = null,
-                            modifier = Modifier.size(80.dp)
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.Crop
                         )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = "PERIZINAN",
-                            style = MaterialTheme.typography.bodySmall,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = "Users can use this feature to manage permits in the dormitory area.",
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Button(
-                            onClick = { /* Handle GO PERIZINAN */ },
-                            shape = RoundedCornerShape(50),
-                            colors = ButtonDefaults.buttonColors()
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(16.dp),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text("GO PERIZINAN")
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = "PERIZINAN",
+                                style = MaterialTheme.typography.bodySmall,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = "",
+                                style = MaterialTheme.typography.bodySmall
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Button(
+                                onClick = { /* Handle GO PERIZINAN */ },
+                                shape = RoundedCornerShape(50),
+                                colors = ButtonDefaults.buttonColors()
+                            ) {
+                                Text("GO PERIZINAN")
+                            }
                         }
                     }
                 }
@@ -300,42 +336,45 @@ fun HomeContent(modifier: Modifier, navController: NavController) {
                     modifier = Modifier
                         .size(width = 150.dp, height = 150.dp)
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(16.dp),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
+                    Box {
                         Image(
                             painter = painterResource(id = R.drawable.laundry),
                             contentDescription = null,
-                            modifier = Modifier.size(80.dp)
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.Crop
                         )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = "LAUNDRY",
-                            style = MaterialTheme.typography.bodySmall,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = "laundry",
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Button(
-                            onClick = { /*TODO*/ },
-                            shape = RoundedCornerShape(50),
-                            colors = ButtonDefaults.buttonColors()
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(16.dp),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text("-")
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = "LAUNDRY",
+                                style = MaterialTheme.typography.bodySmall,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = "laundry",
+                                style = MaterialTheme.typography.bodySmall
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Button(
+                                onClick = { /*TODO*/ },
+                                shape = RoundedCornerShape(50),
+                                colors = ButtonDefaults.buttonColors()
+                            ) {
+                                Text("GO LAUNDRY")
+                            }
                         }
                     }
                 }
             }
             Row(
-                modifier = modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize(),
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
 //                Fitur Air Minum
@@ -346,36 +385,39 @@ fun HomeContent(modifier: Modifier, navController: NavController) {
                     modifier = Modifier
                         .size(width = 150.dp, height = 150.dp)
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(16.dp),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
+                    Box {
                         Image(
                             painter = painterResource(id = R.drawable.airminum),
                             contentDescription = null,
-                            modifier = Modifier.size(80.dp)
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.Crop
                         )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = "AIR MINUM",
-                            style = MaterialTheme.typography.bodySmall,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = "air minum",
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Button(
-                            onClick = { /*TODO*/ },
-                            shape = RoundedCornerShape(50),
-                            colors = ButtonDefaults.buttonColors()
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(16.dp),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text("-")
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = "AIR MINUM",
+                                style = MaterialTheme.typography.bodySmall,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = "air minum",
+                                style = MaterialTheme.typography.bodySmall
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Button(
+                                onClick = { /*TODO*/ },
+                                shape = RoundedCornerShape(50),
+                                colors = ButtonDefaults.buttonColors()
+                            ) {
+                                Text("GO AIR MINUM")
+                            }
                         }
                     }
                 }
@@ -391,42 +433,45 @@ fun HomeContent(modifier: Modifier, navController: NavController) {
                     modifier = Modifier
                         .size(width = 150.dp, height = 150.dp)
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(16.dp),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
+                    Box {
                         Image(
                             painter = painterResource(id = R.drawable.listrik),
                             contentDescription = null,
-                            modifier = Modifier.size(80.dp)
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.Crop
                         )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = "LISTRIK",
-                            style = MaterialTheme.typography.bodySmall,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = "listrik",
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Button(
-                            onClick = { /*TODO*/ },
-                            shape = RoundedCornerShape(50),
-                            colors = ButtonDefaults.buttonColors()
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(16.dp),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text("-")
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = "LISTRIK",
+                                style = MaterialTheme.typography.bodySmall,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = "listrik",
+                                style = MaterialTheme.typography.bodySmall
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Button(
+                                onClick = { /*TODO*/ },
+                                shape = RoundedCornerShape(50),
+                                colors = ButtonDefaults.buttonColors()
+                            ) {
+                                Text("GO LISTRIK")
+                            }
                         }
                     }
                 }
             }
             Row(
-                modifier = modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize(),
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
 //                Fitur Paket
@@ -441,36 +486,39 @@ fun HomeContent(modifier: Modifier, navController: NavController) {
                     modifier = Modifier
                         .size(width = 150.dp, height = 150.dp)
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(16.dp),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
+                    Box {
                         Image(
                             painter = painterResource(id = R.drawable.paket),
                             contentDescription = null,
-                            modifier = Modifier.size(80.dp)
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.Crop
                         )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = "PAKET",
-                            style = MaterialTheme.typography.bodySmall,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = "paket",
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Button(
-                            onClick = { /*TODO*/ },
-                            shape = RoundedCornerShape(50),
-                            colors = ButtonDefaults.buttonColors()
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(16.dp),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text("-")
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = "PAKET",
+                                style = MaterialTheme.typography.bodySmall,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = "paket",
+                                style = MaterialTheme.typography.bodySmall
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Button(
+                                onClick = { /*TODO*/ },
+                                shape = RoundedCornerShape(50),
+                                colors = ButtonDefaults.buttonColors()
+                            ) {
+                                Text("GO PAKET")
+                            }
                         }
                     }
                 }
@@ -486,36 +534,39 @@ fun HomeContent(modifier: Modifier, navController: NavController) {
                     modifier = Modifier
                         .size(width = 150.dp, height = 150.dp)
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(16.dp),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
+                    Box {
                         Image(
                             painter = painterResource(id = R.drawable.baseline_history_24),
                             contentDescription = null,
-                            modifier = Modifier.size(80.dp)
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.Crop
                         )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = "HISTORY",
-                            style = MaterialTheme.typography.bodySmall,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = "histori",
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Button(
-                            onClick = { /*TODO*/ },
-                            shape = RoundedCornerShape(50),
-                            colors = ButtonDefaults.buttonColors()
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(16.dp),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text("-")
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = "HISTORY",
+                                style = MaterialTheme.typography.bodySmall,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = "histori",
+                                style = MaterialTheme.typography.bodySmall
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Button(
+                                onClick = { /*TODO*/ },
+                                shape = RoundedCornerShape(50),
+                                colors = ButtonDefaults.buttonColors()
+                            ) {
+                                Text("GO HISTORY")
+                            }
                         }
                     }
                 }
