@@ -8,6 +8,7 @@ sealed class Screen(
     data object Register: Screen("register")
     data object Home: Screen("home")
     data object History: Screen("history")
+    data object HistoryPerizinan: Screen("historyPerizinan")
     data object Profile: Screen("profile")
     data object About: Screen("about")
     data object Aturan: Screen("aturan")

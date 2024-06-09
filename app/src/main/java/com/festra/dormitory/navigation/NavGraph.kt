@@ -20,6 +20,7 @@ import com.festra.dormitory.ui.screen.admin.Admin_Perizinan
 import com.festra.dormitory.ui.screen.admin.Admin_Users
 import com.festra.dormitory.ui.screen.admin.Admin_mahasiswa
 import com.festra.dormitory.ui.screen.admin.HomeAdmin
+import com.festra.dormitory.ui.screen.history.HistoryPerizinanScreen
 import com.festra.dormitory.ui.screen.mahasiswa.AboutScreen
 import com.festra.dormitory.ui.screen.mahasiswa.AirminumScreen
 import com.festra.dormitory.ui.screen.mahasiswa.AturanScreen
@@ -74,6 +75,11 @@ fun SetupNavGraph(
             route = Screen.Aturan.route
         ) {
             AturanScreen(navController)
+        }
+        composable(
+            route = Screen.HistoryPerizinan.route
+        ) {
+            HistoryPerizinanScreen(navController)
         }
         composable(
             route = Screen.Perizinan.route

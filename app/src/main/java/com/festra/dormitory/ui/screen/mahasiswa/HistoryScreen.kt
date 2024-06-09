@@ -103,7 +103,7 @@ fun HistoryContent(modifier: Modifier = Modifier, navController: NavController) 
                 imageRes = R.drawable.perizinan,
                 title = "Perizinan",
                 description = "Users dapat menggunakan fitur ini untuk menguruskan perizinan di area asrama.",
-                destination = "perizinan"
+                destination = "historyPerizinan"
             ),
             HistoryItem(
                 imageRes = R.drawable.laundry,

@@ -24,10 +24,9 @@ import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun TopAppBarNavigationComponent(
+fun TopAppBarAdmin(
     navController: NavController,
     judul: String,
-    currentUserRole: String?
 ) {
     val showMenu = remember { mutableStateOf(false) }
     val auth = FirebaseAuth.getInstance()
@@ -53,11 +52,7 @@ fun TopAppBarNavigationComponent(
                     text = { Text("Profile") },
                     onClick = {
                         showMenu.value = false
-                        if (currentUserRole == "admin") {
-                            navController.navigate(Screen.AdminProfile.route)
-                        } else {
-                            navController.navigate(Screen.Profile.route)
-                        }
+                        navController.navigate(Screen.AdminProfile.route)
                     },
                     modifier = Modifier.padding(horizontal = 16.dp)
                 )

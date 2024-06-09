@@ -1,5 +1,6 @@
 package com.festra.dormitory.ui.screen.mahasiswa
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,28 +15,24 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -48,8 +45,10 @@ import androidx.navigation.compose.rememberNavController
 import com.festra.dormitory.R
 import com.festra.dormitory.navigation.Screen
 import com.festra.dormitory.ui.component.BottomBarNavigationComponent
+import com.festra.dormitory.ui.component.TopAppBarNavigationComponent
 import com.festra.dormitory.ui.screen.UserViewModel
 import com.festra.dormitory.ui.theme.DormitoryAppTheme
+import com.google.firebase.auth.FirebaseAuth
 
 
 data class BottomNavigationItem(
@@ -59,50 +58,30 @@ data class BottomNavigationItem(
 )
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 fun HomeScreen(navController: NavController, userViewModel: UserViewModel = viewModel()) {
-    // data store
-//    val dataStore = SettingsDataStore(LocalContext.current)
-//    val showList by dataStore.layoutFlow.collectAsState(true)
-    val userUid by userViewModel.userUid.collectAsState()
+
+    //get user role
+    var currentUserRole by remember { mutableStateOf<String?>(null) }
+    val currentUser = FirebaseAuth.getInstance().currentUser
+    val context = LocalContext.current
+
+    currentUser?.getIdToken(true)?.addOnCompleteListener { task ->
+        if (task.isSuccessful) {
+            val idTokenResult = task.result
+            val role = idTokenResult?.claims?.get("role") as? String
+            // Now 'role' contains the user's role
+            currentUserRole = role
+        } else {
+            // Handle error
+            Toast.makeText(context,"gagal mengambil role", Toast.LENGTH_SHORT).show()
+        }
+    }
+
 
 
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
-                title = { Text(text = "Home") },
-                colors = TopAppBarDefaults.mediumTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceBright,
-                    titleContentColor = MaterialTheme.colorScheme.primary
-
-                ),
-                actions = {
-//                    IconButton(onClick = {
-//                        CoroutineScope(Dispatchers.IO).launch {
-//                            dataStore.saveLayout(!showList)
-//                        }
-//                    })
-//                    {
-//                        Icon(
-//                            painter = painterResource(
-//                                if (showList) R.drawable.baseline_grid_view_24
-//                                else R.drawable.baseline_view_list_24
-//                            ),
-//                            contentDescription = stringResource(
-//                                if (showList) R.string.grid
-//                                else R.string.list
-//                            ),
-//                            tint = MaterialTheme.colorScheme.primary
-//                        )
-//                    }
-                    IconButton(onClick = { navController.navigate(Screen.Profile.route) }) {
-                        Icon(
-                            imageVector = Icons.Filled.AccountCircle,
-                            contentDescription = "Profile"
-                        )
-                    }
-                }
-            )
+            TopAppBarNavigationComponent(navController = navController, judul = "Home", currentUserRole = currentUserRole)
         },
         bottomBar = {
             BottomBarNavigationComponent(navController = navController, selectedIconIndex = 1, userViewModel = userViewModel )
